@@ -5,7 +5,7 @@ import { auth } from '../firebase';
 import { signOut, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 
-function Profile(props) {
+function Dashboard(props) {
 
     const navigate = useNavigate();
     const user = auth.currentUser;
@@ -63,4 +63,4 @@ function Profile(props) {
     );
 }
 
-export default Profile;
+export default Dashboard;
