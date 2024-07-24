@@ -1,7 +1,7 @@
 import Layout from './Layout'
-import Login from './signin_signup/Login'
-import Signup from './signin_signup/Signup'
-import Dashboard from './dashboard/Dashboard'
+import Login from './components/signin_signup/Login'
+import Signup from './components/signin_signup/Signup'
+import Dashboard from './components/dashboard/Dashboard'
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './AuthContext'

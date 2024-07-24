@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { useNavigate, Link } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 import { signOut, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import InputFields from './InputFields';
 
-import Navbar from '../navbar/Navbar';
+import Navbar from '../Navbar';
 
 
 function Dashboard(props) {
