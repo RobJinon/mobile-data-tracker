@@ -17,7 +17,7 @@ function Login(props) {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            navigate("/dashboard");
+            navigate("/home");
         }
 
         catch {

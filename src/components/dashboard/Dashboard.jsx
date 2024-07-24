@@ -44,7 +44,6 @@ function Dashboard(props) {
 
     return (
         <div className = "w-screen min-h-screen">
-            <Navbar />
             <div className="card bg-slate-100 text-gray-600 w-full shadow-xl">
                 <div className='card-body text-center'>
                     <h1>This is the dashboard</h1>
