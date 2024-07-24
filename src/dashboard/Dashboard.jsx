@@ -6,6 +6,8 @@ import { signOut, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import InputFields from './InputFields';
 
+import Navbar from '../navbar/Navbar';
+
 
 function Dashboard(props) {
 
@@ -41,7 +43,8 @@ function Dashboard(props) {
     }
 
     return (
-        <div className = "w-3/4 p-5">
+        <div className = "w-screen min-h-screen">
+            <Navbar />
             <div className="card bg-slate-100 text-gray-600 w-full shadow-xl">
                 <div className='card-body text-center'>
                     <h1>This is the dashboard</h1>
