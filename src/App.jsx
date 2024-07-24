@@ -15,9 +15,10 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path = "/" element = { <Layout/> }>
-            <Route path = 'login' element = { <Login/>}></Route>
+            <Route path = '/login' element = { <Login/>}></Route>
             <Route path = "/signup" element = { <Signup/> } ></Route>
             <Route index element = { <Dashboard/> }></Route>
+            <Route path='/dashboard' element = { <Dashboard/> }></Route>
           </Route>
         </Routes>
       </AuthProvider>
