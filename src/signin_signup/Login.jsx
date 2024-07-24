@@ -42,7 +42,7 @@ function Login(props) {
     }
 
     return (
-        <div className="card bg-base-100 w-full shadow-xl">
+        <div className="card bg-base-100 w-3/4 lg:w-1/3 shadow-xl">
             <div className="card-body items-center text-center">
                 <h2 className="card-title text-5xl my-5">Login</h2>
 
@@ -65,7 +65,11 @@ function Login(props) {
 
                     <div className='divider'></div>
 
-                    <p>Don't have an account? <Link to='/signup'><a className='link link-primary'>Sign up here.</a></Link></p>
+                    <div className="flex flex-col lg:flex-row">
+                        <p>Don't have an account?</p>
+                        <Link to='/signup'><a className='link link-primary mx-1'>Sign up here.</a></Link>
+                    </div>
+
                 </div>
 
 
