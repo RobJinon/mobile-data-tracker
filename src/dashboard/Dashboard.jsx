@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
+import InputFields from './InputFields';
 
 
 function Dashboard(props) {
@@ -44,7 +45,7 @@ function Dashboard(props) {
             <div className="card bg-slate-100 text-gray-600 w-full shadow-xl">
                 <div className='card-body text-center'>
                     <h1>This is the dashboard</h1>
-                    <Link to='/login'>Login</Link>
+                    <InputFields></InputFields>
                 </div>
             </div>
         </div> 
