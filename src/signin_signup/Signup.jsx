@@ -170,7 +170,7 @@ function Signup(props) {
                                 Signup
                     </Button>
 
-                    <Link to = "../" style={{width:'100%'}}>
+                    <Link to = "/login" style={{width:'100%'}}>
                         <Button     
                             type='submit' 
                             variant='contained'

@@ -8,6 +8,7 @@ function Layout(props) {
                 {/* <div className = "p-5">
                     <p className = "text-4xl">Firebase Authentication Test</p>
                 </div> */}
+                
                 <Outlet />
             </div>
         </div>
