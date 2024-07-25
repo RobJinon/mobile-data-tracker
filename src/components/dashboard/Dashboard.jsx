@@ -47,12 +47,12 @@ function Dashboard(props) {
 
     return (
         <div className="flex w-full justify-center">
-            <div className="flex flex-row justify-center gap-5 lg:w-3/5">
-                <div className='rounded-lg w-[30%] bg-base-200 h-full hidden lg:block'>
+            <div className="flex flex-row justify-center gap-5 lg:w-4/5">
+                <div className='rounded-lg w-[20%] bg-base-200 h-full hidden lg:block'>
                     <IspList />
                 </div>
 
-                <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[70%] min-h-fit max-h-fit self-center'>
+                <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[80%] min-h-fit max-h-fit self-center'>
                     <div className='flex flex-col gap-y-6 text-center'>
                         <h1 className='text-2xl font-bold'>Welcome!</h1>
                         <InputFields></InputFields>

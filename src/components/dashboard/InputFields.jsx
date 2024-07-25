@@ -2,7 +2,7 @@ import React from 'react';
 
 function MobileDataInput(props) {
     return (
-        <div className='flex flex-col gap-y-1'>
+        <div className='flex flex-col gap-y-1 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[40%]">
                 <label for={props.class}>{props.name}</label>
             </div>
@@ -23,7 +23,7 @@ function MobileDataInput(props) {
 
 function DatePicker(props) {
     return (
-        <div className='flex flex-col justify-between gap-y-1.5'>
+        <div className='flex flex-col justify-between gap-y-1.5 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[35%]">
                 <label for={props.class}>{props.name}</label>
             </div>
@@ -37,19 +37,22 @@ function DatePicker(props) {
 function InputFields() {
     return ( 
         <div className="flex flex-col gap-y-6">
-            <div id="input-fields" className="flex flex-row justify-between gap-x-0.5">
-                <div id="date-fields" className="flex flex-col justify-items-start gap-y-2 w-[47%]">
+            <div id="input-fields" className="flex flex-row lg:flex-col justify-between gap-x-0.5 lg:gap-y-5">
+                <div id="date-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
                     <DatePicker name="Start Date" class="start-date" ></DatePicker>
                     <DatePicker name="Current Date" class="current-date" ></DatePicker>
                     <DatePicker name="End Date" class="end-date" ></DatePicker>
                 </div>
-                <div id="mobile-data-fields" className="flex flex-col justify-items-start gap-y-2 w-[47%]">
+                <div id="mobile-data-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
                     <MobileDataInput name="Original Data" class="original-data"></MobileDataInput>
                     <MobileDataInput name="Original Data" class="original-data"></MobileDataInput>
+                    <div className='flex flex-col gap-y-1 justify-end lg:w-[32%]'>
+                        <button className="btn btn-sm bg-primary text-white w-full hidden lg:block lg:self-end lg:h-[55%]">COMPUTE MY DATA</button>
+                    </div>
                 </div>
             </div>
 
-            <button className="btn btn-wide bg-primary text-white w-full">COMPUTE MY DATA</button>
+            <button className="btn btn-wide bg-primary text-white w-full lg:hidden">COMPUTE MY DATA</button>
         </div>
      );
 }
