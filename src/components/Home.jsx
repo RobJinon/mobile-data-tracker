@@ -4,7 +4,7 @@ import Dashboard from './dashboard/Dashboard';
 
 function Home() {
     return (
-        <div>
+        <div className='w-screen min-h-screen flex flex-col'>
             <Navbar></Navbar>
             <Dashboard></Dashboard>
         </div>

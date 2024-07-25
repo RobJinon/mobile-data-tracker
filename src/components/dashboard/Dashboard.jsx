@@ -43,14 +43,12 @@ function Dashboard(props) {
     }
 
     return (
-        <div className = "w-screen min-h-screen">
-            <div className="card bg-slate-100 text-gray-600 w-full shadow-xl">
-                <div className='card-body text-center'>
-                    <h1>This is the dashboard</h1>
-                    <InputFields></InputFields>
-                </div>
+        <div className='p-8 rounded-lg bg-base-200 w-11/12 max-h-screen self-center'>
+            <div className='flex flex-col gap-y-6 text-center'>
+                <h1 className='text-2xl font-bold'>Welcome!</h1>
+                <InputFields></InputFields>
             </div>
-        </div> 
+        </div>
     );
 }
 
