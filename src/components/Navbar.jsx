@@ -1,14 +1,15 @@
 import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 function Navbar(props) {
     return (
         <div className="navbar bg-[#14213D] text-white mb-10 pr-20">
             <div class="flex-none  lg:hidden">
-                <button class="btn btn-square btn-ghost text-slate-100">
+                <label htmlFor="my-drawer" class="btn btn-square btn-ghost text-slate-100">
                     <MenuIcon />
-                </button>
+                </label>
             </div>
             <div className="flex lg:justify-start lg:flex-1">
                 <a className="btn btn-ghost text-xl">MOBILE DATA TRACKER</a>
@@ -27,6 +28,7 @@ function Navbar(props) {
                 </Link>
                 
             </div>
+            <Sidebar/>
         </div>
     );
 }
