@@ -7,6 +7,8 @@ import { useState } from 'react';
 import InputFields from './InputFields';
 
 import Navbar from '../Navbar';
+import ProgressBar from './ProgressBar';
+import OutputFields from './OutputFields';
 
 
 function Dashboard(props) {
@@ -43,10 +45,12 @@ function Dashboard(props) {
     }
 
     return (
-        <div className='p-8 rounded-lg bg-base-200 w-11/12 max-h-screen self-center'>
+        <div className='p-8 rounded-lg bg-base-200 w-11/12 min-h-fit max-h-fit self-center'>
             <div className='flex flex-col gap-y-6 text-center'>
                 <h1 className='text-2xl font-bold'>Welcome!</h1>
                 <InputFields></InputFields>
+                <ProgressBar></ProgressBar>
+                <OutputFields></OutputFields>
             </div>
         </div>
     );

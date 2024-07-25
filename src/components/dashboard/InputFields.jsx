@@ -9,7 +9,7 @@ function MobileDataInput(props) {
             <div className="join flex flex-col gap-y-1 w-full h-[60%]">
                 <div className="flex flex-row justify-start h-[60%]">
                     <input className="input input-sm bg-white border-primary rounded text-base-300 join-item w-full" placeholder="Amount" />
-                    <select className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%]">
+                    <select className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
                         <option>TB</option>
                         <option selected>GB</option>
                         <option>MB</option>
@@ -28,7 +28,7 @@ function DatePicker(props) {
                 <label for={props.class}>{props.name}</label>
             </div>
             <div className="flex flex-col w-full h-[65%]">
-                <input type="date" className="bg-white border border-primary rounded text-base-300 py-0.5 px-1" id={props.class} name={props.class}/>
+                <input type="date" className="bg-white border border-primary rounded py-0.5 px-1 w-full" id={props.class} name={props.class}/>
             </div>
         </div>
     );
