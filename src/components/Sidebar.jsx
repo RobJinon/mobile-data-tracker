@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import IspList from './ispList/IspList';
 
 function Sidebar() {
     return (
@@ -9,12 +10,9 @@ function Sidebar() {
             <div className="drawer-side z-50">
                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
 
-                <ul className="menu flex flex-col justify-between bg-base-200 text-base-content min-h-full w-80 p-4">
+                <ul className="menu flex flex-col p-0 justify-between bg-base-200 text-base-content min-h-full w-80">
                     {/* Sidebar top */}
-                    <div>
-                        <li><a>Sidebar Item 1</a></li>
-                        <li><a>Sidebar Item 2</a></li>
-                    </div>
+                    <IspList/>
 
                     {/* Sidebar bottom */}
                     <div className='flex flex-col w-full gap-2 p-3 items-center justify-center'>
