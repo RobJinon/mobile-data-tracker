@@ -34,7 +34,7 @@ function DatePicker(props) {
     );
 }
 
-function InputFields() {
+function InputFields({ onInput }) {
 
     function handleSubmit(e) {
 
@@ -50,15 +50,8 @@ function InputFields() {
 
         // Or you can work with it as a plain object:
         const formJson = Object.fromEntries(formData.entries());
-        
-        const startDate = formJson["start-date"];
-        const currDate = formJson["current-date"];
-        const endDate = formJson["end-date"];
 
-        const origData = formJson["original-data"];
-        const origDataUnit = formJson["original-data-unit"];
-        const currData = formJson["current-data"];
-        const currDataUnit = formJson["current-data-unit"];
+        onInput(formJson);
 
     }
 

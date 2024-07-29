@@ -45,6 +45,17 @@ function Dashboard(props) {
         }
     }
 
+    const [data, setData] = useState("");
+
+    // const startDate = data["start-date"];
+    // const currDate = data["current-date"];
+    // const endDate = data["end-date"];
+
+    // const origData = data["original-data"];
+    // const origDataUnit = data["original-data-unit"];
+    // const currData = data["current-data"];
+    // const currDataUnit = data["current-data-unit"];
+
     return (
         <div className="flex w-full justify-center">
             <div className="flex flex-row justify-center gap-5 lg:w-4/5">
@@ -55,9 +66,12 @@ function Dashboard(props) {
                 <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[80%] min-h-fit max-h-fit self-center'>
                     <div className='flex flex-col gap-y-6 text-center'>
                         <h1 className='text-2xl font-bold'>Welcome!</h1>
-                        <InputFields></InputFields>
-                        <ProgressBar></ProgressBar>
-                        <OutputFields></OutputFields>
+
+                        {/* The setData function (which sets a value to the data variable) was passed to the InputFields component. In InputFields.jsx (child), the InputFields component would then pass its data to the setData function (i.e., onInput(formJson)) which would set the value of the data variable in the Dashboard.jsx (parent). This is a "Child to Parent" passing of data. See: https://dev.to/andydziabo/how-to-pass-data-between-sibling-components-in-react-2cjg*/}
+                        <InputFields onInput={setData}></InputFields>
+
+                        <ProgressBar data={data}></ProgressBar>
+                        <OutputFields data={data}></OutputFields>
                     </div>
                 </div>
             </div>
