@@ -8,7 +8,7 @@ function MobileDataInput(props) {
             </div>
             <div className="join flex flex-col gap-y-1 w-full h-[60%]">
                 <div className="flex flex-row justify-start h-[60%]">
-                    <input type="number" defaultValue={0} name={props.class} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
+                    <input type="number" step="any" defaultValue={0} name={props.class} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
                     <select name={`${props.class}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
                         <option>TB</option>
                         <option selected>GB</option>

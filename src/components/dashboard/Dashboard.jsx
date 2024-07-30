@@ -47,6 +47,7 @@ function Dashboard(props) {
 
     const [data, setData] = useState("");
 
+    // // THESE ARE THE CONTENTS OF {data}
     // const startDate = data["start-date"];
     // const currDate = data["current-date"];
     // const endDate = data["end-date"];
