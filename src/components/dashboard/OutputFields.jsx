@@ -91,11 +91,37 @@ function OutputFields({ data }) {
         isAheadOrBehind = "on track. Great!";
     }
 
+    // const selectReactionImage = () => {
+    //     var image = document.createElement("img");
+    //     if (aheadOrBehindData > 0) {
+    //         image.src = "asset/positive-gif.gif";
+    //     } else if (aheadOrBehindData < 0) {
+    //         image.src = "asset/negative-gif.gif";
+    //     } else {
+    //         image.src = "asset/neutral-gif.gif";
+    //     }
+    //     document.getElementById("image-container").appendChild(image);
+    // }
+
+    // const selectReactionImage = () => (
+    //     <img id="reaction-image" src="asset/positive-gif.gif"/>
+    // );
+
+    const selectReactionImage = () => {
+        if (aheadOrBehindData > 0) {
+            return (<img id="reaction-image" src="asset/positive-gif.gif"/>);
+        } else if (aheadOrBehindData < 0) {
+            return (<img id="reaction-image" src="asset/negative-gif.gif"/>);
+        } else {
+            return (<img id="reaction-image" src="asset/neutral-gif.gif"/>);
+        }
+    }
+
     return (
         <div className='flex flex-col lg:flex-row bg-[#C5C5C5] p-6 rounded-md gap-y-8 lg:gap-x-10'>
             <div className='flex flex-row justify-between gap-x-4 lg:w-[65%]'>
-                <div className='w-[35%] lg:w-[30%]'>
-                    <img src="asset/positive-gif.gif"/>
+                <div className='image-container w-[35%] lg:w-[30%]'>
+                    {selectReactionImage()}
                 </div>
                 <div className='flex flex-col gap-y-4 w-[65%] text-start leading-tight'>
                     <div className='flex flex-col justify-start items-start'>
