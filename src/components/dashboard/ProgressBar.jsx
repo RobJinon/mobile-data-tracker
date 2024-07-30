@@ -2,10 +2,17 @@ import React from 'react';
 
 function ProgressBar({ data }) {
 
-    const origData = data["original-data"];
-    const origDataUnit = data["original-data-unit"];
-    const currData = data["current-data"];
-    const currDataUnit = data["current-data-unit"];
+    var origData = data["original-data"];
+    var origDataUnit = data["original-data-unit"];
+    var currData = data["current-data"];
+    var currDataUnit = data["current-data-unit"];
+
+    if (!data) {
+        origData = 0;
+        currData = 0;
+        origDataUnit = "GB";
+        currDataUnit = "GB";
+    }
 
     return (
         <div className='flex flex-row gap-x-2 items-center w-full h-[30%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md'>

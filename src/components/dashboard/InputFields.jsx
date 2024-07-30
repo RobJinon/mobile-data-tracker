@@ -8,7 +8,7 @@ function MobileDataInput(props) {
             </div>
             <div className="join flex flex-col gap-y-1 w-full h-[60%]">
                 <div className="flex flex-row justify-start h-[60%]">
-                    <input type="number" name={props.class} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
+                    <input type="number" defaultValue={0} name={props.class} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
                     <select name={`${props.class}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
                         <option>TB</option>
                         <option selected>GB</option>
@@ -22,13 +22,26 @@ function MobileDataInput(props) {
 }
 
 function DatePicker(props) {
+    
+    // Today's date as default value of date picker
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;
+
     return (
         <div className='flex flex-col justify-between gap-y-1.5 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[35%]">
                 <label for={props.class}>{props.name}</label>
             </div>
             <div className="flex flex-col w-full h-[65%]">
-                <input type="date" name={props.class} id={props.class} className="bg-white border border-primary rounded py-0.5 px-1 w-full placeholder-transparent::placeholder" placeholder="yolo"/>
+                <input type="date" defaultValue={today} name={props.class} id={props.class} className="bg-white border border-primary rounded py-0.5 px-1 w-full"/>
             </div>
         </div>
     );
