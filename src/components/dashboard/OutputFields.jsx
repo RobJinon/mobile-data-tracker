@@ -1,18 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function OutputFields({ data }) {
 
-    // These are the contents of {data}
-    var origData = data["original-data"];
-    var origDataUnit = data["original-data-unit"];
-    var currData = data["current-data"];
-    var currDataUnit = data["current-data-unit"];
-
-    var startDate = data["start-date"];
-    var currDate = data["current-date"];
-    var endDate = data["end-date"];
-
-    // Today's date as default value of date pickers (date input field)
+    let [origData, setOrigData] = useState(0);
+    let [origDataUnit, setOrigDataUnit] = useState("");
+    let [currData, setCurrData] = useState(0);
+    let [currDataUnit, setCurrDataUnit] = useState("");
+    
     var date = new Date();
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -21,22 +15,31 @@ function OutputFields({ data }) {
     if (day < 10) day = "0" + day;
     var today = year + "-" + month + "-" + day;
 
-    // If no submitted inputs yets, sets a default value for the input fields
-    if (!data) {
-        origData = 0;
-        currData = 0;
-        origDataUnit = "GB";
-        currDataUnit = "GB";
-        startDate = today;
-        currDate = today;
-        endDate = today;
-    }
+    let [startDate, setStartDate] = useState(today);
+    let [currDate, setCurrDate] = useState(today);
+    let [endDate, setEndDate] = useState(today);
+
+    useEffect(() => {
+        // These are the contents of {data}
+        setOrigData(data["original-data"]);
+        setOrigDataUnit(data["original-data-unit"]);
+        setCurrData(data["current-data"]);
+        setCurrDataUnit(data["current-data-unit"]);
+        setStartDate(data["start-date"]);
+        setCurrDate(data["current-date"]);
+        setEndDate(data["end-date"]);
+    });
+
 
     // Total amount of data consumed
-    let consumedData = origData - currData;
+    let [consumedData, setConsumedData] = useState();
+    useEffect(() => {
+        setConsumedData(origData - currData);
+    });
+
 
     // Gets the number of days between two dates
-    function timeDifference(endDate, startDate) {
+    const timeDifference = (endDate, startDate) => {
         // Calculating the time difference of two dates (end-date and start-date)
         let differenceInTime = new Date(endDate).getTime() - new Date(startDate).getTime();
         // Calculating the no. of days between two dates
@@ -45,15 +48,21 @@ function OutputFields({ data }) {
     }
 
     // Total number of days the data should last
-    let totalDays = timeDifference(endDate, startDate);
+    let [totalDays, setTotalDays] = useState();
+    useEffect(() => {
+        setTotalDays(timeDifference(endDate, startDate));
+    });
     // Remaining number of days until the date the data should last
-    let remainingDays = timeDifference(endDate, currDate);
+    let [remainingDays, setRemainingDays] = useState();
+    useEffect(() => {
+        setRemainingDays(timeDifference(endDate, currDate));
+    });
 
     // The remaining data if the user is on track with their data consumption
-    let expectedRemainingData = () => {
+    const expectedRemainingData = () => {
         // If the remaining data is NaN (usually due to totalDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN((remainingDays / totalDays) * origData)) {
-            return 0
+            return 0;
         // If the remaining data is not NaN, return the computed remaining data
         } else {
             return ((remainingDays / totalDays) * origData);
@@ -61,14 +70,21 @@ function OutputFields({ data }) {
     };
 
     // The remaining data regardless if the user is on track or not with their data consumption
-    let actualRemainingData = origData - consumedData;
+    let [actualRemainingData, setActualRemainingData] = useState();
+    useEffect(() => {
+        setActualRemainingData(origData - consumedData);
+    });
 
     // The amount of data that the user is ahead or behind
     // If the value is positive, the user is ahead, if the value is negative, the user is behind
-    let aheadOrBehindData = (actualRemainingData - expectedRemainingData()).toFixed(2);
+    let [aheadOrBehindData, setAheadOrBehindData] = useState();
+    useEffect(() => {
+        setAheadOrBehindData((actualRemainingData - expectedRemainingData()).toFixed(2));
+    });
+
 
     // The original amount of data that can only be consumed in 1 day
-    let origDailyConsumable = () => {
+    const origDailyConsumable = () => {
         // If origDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(origData / totalDays)) {
             return 0
@@ -80,7 +96,7 @@ function OutputFields({ data }) {
 
     // The updated amount of data that can be consumed 1 in 1 day
     // This may increase or decrease based on whether the user is behind or ahead of their data consumption
-    let newDailyConsumable = () => {
+    const newDailyConsumable = () => {
         // If newDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(currData / remainingDays)) {
             return 0
@@ -91,19 +107,23 @@ function OutputFields({ data }) {
     };
 
     // Sets the textual message/output based on different conditions
-    // Says "You are [ahead by]" when aheadOrBehindData is positive (ahead)
-    // Says "You are [behind by]" when aheadOrBehindData is negative (behind)
-    // Says "You are [on track]" when aheadOrBehindData is 0 or the default value (0)
-    let isAheadOrBehind = "";
-    let daysToStopSpending = 0;
-    if (aheadOrBehindData >= 0) {
-        isAheadOrBehind = "ahead by";
-    } else if (aheadOrBehindData < 0) {
-        isAheadOrBehind = "behind by";
-        daysToStopSpending = Math.round(Math.abs(aheadOrBehindData) / origDailyConsumable());
-    } else {
-        isAheadOrBehind = "on track. Great!";
-    }
+    let [isAheadOrBehind, setIsAheadOrBehind] = useState("");
+    let [daysToStopSpending, setDaysToStopSpending] = useState(0);
+
+    useEffect(() => {
+        if (aheadOrBehindData >= 0) {
+            // Says "You are [ahead by]" when aheadOrBehindData is positive (ahead)
+            setIsAheadOrBehind("ahead by");
+        } else if (aheadOrBehindData < 0) {
+            // Says "You are [behind by]" when aheadOrBehindData is negative (behind)
+            setIsAheadOrBehind("behind by");
+            // Additionally says the no. of days to stop spending
+            setDaysToStopSpending(Math.round(Math.abs(aheadOrBehindData) / origDailyConsumable()));
+        } else {
+            // Says "You are [on track]" when aheadOrBehindData is 0 or the default value (0)
+            setIsAheadOrBehind("on track. Great!");
+        }
+    });
 
     // Creates a dynamic image that changes based on different conditions
     const selectReactionImage = () => {
