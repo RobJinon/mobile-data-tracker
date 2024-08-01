@@ -6,8 +6,8 @@ function AddIspModal(props) {
     const [ispName, setIspName] = useState("");
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
-    const [amount, setAmount] = useState(0);
-    const [amountUnit, setAmountUnit] = useState("GB");
+    const [origData, setOrigData] = useState(0);
+    const [origDataUnit, setOrigDataUnit] = useState("GB");
     const [errors, setErrors] = useState({});
 
     const [ispList, setIspList] = useState(() => {
@@ -25,8 +25,8 @@ function AddIspModal(props) {
         if (!ispName) newErrors.ispName = "ISP name is required";
         if (!startDate) newErrors.startDate = "Start date is required";
         if (!endDate) newErrors.endDate = "End date is required";
-        if (!amount) newErrors.amount = "Amount is required";
-        if (amount <= 0) newErrors.amount = "Amount must be greater than 0";
+        if (!origData) newErrors.origData = "Amount is required";
+        if (origData <= 0) newErrors.origData = "Amount must be greater than 0";
         return newErrors;
     };
 
@@ -41,8 +41,8 @@ function AddIspModal(props) {
             name: ispName,
             startDate: startDate,
             endDate: endDate,
-            amount: parseFloat(amount),
-            unit: amountUnit
+            origData: parseFloat(origData),
+            origDataUnit: origDataUnit
         };
 
         setIspList(oldIspList => [...oldIspList, isp]);
@@ -51,8 +51,8 @@ function AddIspModal(props) {
         setIspName("");
         setStartDate(today);
         setEndDate(today);
-        setAmount("");
-        setAmountUnit("GB");
+        setOrigData("");
+        setOrigDataUnit("GB");
         setErrors({});
 
         // Close the modal
@@ -118,22 +118,22 @@ function AddIspModal(props) {
                         <input
                             id='amount'
                             type="number"
-                            className={`input input-bordered w-1/4 join-item ${errors.amount ? 'input-error' : ''}`}
-                            value={amount}
-                            onChange={e => setAmount(e.target.value)}
+                            className={`input input-bordered w-1/4 join-item ${errors.origData ? 'input-error' : ''}`}
+                            value={origData}
+                            onChange={e => setOrigData(e.target.value)}
                         />
                         <select
                             id='amount_unit'
                             className='select select-bordered bg-base-300 join-item'
-                            value={amountUnit}
-                            onChange={e => setAmountUnit(e.target.value)}
+                            value={origDataUnit}
+                            onChange={e => setOrigDataUnit(e.target.value)}
                         >
                             <option value="TB">TB</option>
                             <option value="GB">GB</option>
                             <option value="MB">MB</option>
                         </select>
                     </div>
-                    {errors.amount && <span className="text-error">{errors.amount}</span>}
+                    {errors.origData && <span className="text-error">{errors.origData}</span>}
                 </label>
 
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
