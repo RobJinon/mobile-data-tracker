@@ -21,7 +21,7 @@ function OutputFields({ data }) {
     if (day < 10) day = "0" + day;
     var today = year + "-" + month + "-" + day;
 
-    // Sets a default value for the input fields
+    // If no submitted inputs yets, sets a default value for the input fields
     if (!data) {
         origData = 0;
         currData = 0;
@@ -32,8 +32,7 @@ function OutputFields({ data }) {
         endDate = today;
     }
 
-    console.log("Original Data: " +  origData);
-
+    // Total amount of data consumed
     let consumedData = origData - currData;
 
     // Gets the number of days between two dates
@@ -45,41 +44,56 @@ function OutputFields({ data }) {
         return differenceInDays;
     }
 
+    // Total number of days the data should last
     let totalDays = timeDifference(endDate, startDate);
-    console.log("Total Days: " + totalDays);
+    // Remaining number of days until the date the data should last
     let remainingDays = timeDifference(endDate, currDate);
-    console.log("Remaining Days: " + remainingDays);
 
+    // The remaining data if the user is on track with their data consumption
     let expectedRemainingData = () => {
+        // If the remaining data is NaN (usually due to totalDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN((remainingDays / totalDays) * origData)) {
             return 0
+        // If the remaining data is not NaN, return the computed remaining data
         } else {
             return ((remainingDays / totalDays) * origData);
         }
     };
-    console.log("Expected Remaining Data: " + expectedRemainingData());
-    let actualRemainingData = origData - consumedData;
-    console.log("Actual Remaining Data: " + actualRemainingData);
 
+    // The remaining data regardless if the user is on track or not with their data consumption
+    let actualRemainingData = origData - consumedData;
+
+    // The amount of data that the user is ahead or behind
+    // If the value is positive, the user is ahead, if the value is negative, the user is behind
     let aheadOrBehindData = (actualRemainingData - expectedRemainingData()).toFixed(2);
 
+    // The original amount of data that can only be consumed in 1 day
     let origDailyConsumable = () => {
+        // If origDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(origData / totalDays)) {
             return 0
+        // If the origDailyConsumable is not NaN, return the computed value
         } else {
             return (origData / totalDays).toFixed(2);
         }
     };
-    console.log("Original Daily Consumable: " + origDailyConsumable());
+
+    // The updated amount of data that can be consumed 1 in 1 day
+    // This may increase or decrease based on whether the user is behind or ahead of their data consumption
     let newDailyConsumable = () => {
+        // If newDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(currData / remainingDays)) {
             return 0
+        // If the origDailyConsumable is not NaN, return the computed value
         } else {
             return (currData / remainingDays).toFixed(2);
         }
     };
-    console.log("New Daily Consumable: " + newDailyConsumable());
 
+    // Sets the textual message/output based on different conditions
+    // Says "You are [ahead by]" when aheadOrBehindData is positive (ahead)
+    // Says "You are [behind by]" when aheadOrBehindData is negative (behind)
+    // Says "You are [on track]" when aheadOrBehindData is 0 or the default value (0)
     let isAheadOrBehind = "";
     let daysToStopSpending = 0;
     if (aheadOrBehindData >= 0) {
@@ -91,22 +105,7 @@ function OutputFields({ data }) {
         isAheadOrBehind = "on track. Great!";
     }
 
-    // const selectReactionImage = () => {
-    //     var image = document.createElement("img");
-    //     if (aheadOrBehindData > 0) {
-    //         image.src = "asset/positive-gif.gif";
-    //     } else if (aheadOrBehindData < 0) {
-    //         image.src = "asset/negative-gif.gif";
-    //     } else {
-    //         image.src = "asset/neutral-gif.gif";
-    //     }
-    //     document.getElementById("image-container").appendChild(image);
-    // }
-
-    // const selectReactionImage = () => (
-    //     <img id="reaction-image" src="asset/positive-gif.gif"/>
-    // );
-
+    // Creates a dynamic image that changes based on different conditions
     const selectReactionImage = () => {
         if (aheadOrBehindData > 0) {
             return (<img id="reaction-image" src="asset/positive-gif.gif"/>);
