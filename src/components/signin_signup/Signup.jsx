@@ -5,36 +5,6 @@ import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Box, alpha, styled } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import EmailIcon from '@mui/icons-material/Email';
-import Paper from '@mui/material/Paper';
-import PasswordIcon from '@mui/icons-material/Password';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-const StyledInput = styled(OutlinedInput, {
-    shouldForwardProp: (prop) => prop !== 'success',
-  })(({ success, theme }) => ({
-    width: 300,
-    ...(success && {
-      color: theme.palette.success.main,
-      '& .MuiSlider-thumb': {
-        [`&:hover, &.Mui-focusVisible`]: {
-          boxShadow: `0px 0px 0px 8px ${alpha(theme.palette.success.main, 0.16)}`,
-        },
-        [`&.Mui-active`]: {
-          boxShadow: `0px 0px 0px 14px ${alpha(theme.palette.success.main, 0.16)}`,
-        },
-      },
-    }),
-  }));
-
 function Signup(props) {
 
     const navigate = useNavigate();
