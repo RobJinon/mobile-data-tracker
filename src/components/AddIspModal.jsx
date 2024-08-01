@@ -64,7 +64,7 @@ function AddIspModal(props) {
 
     return (
         <dialog id="add_isp_modal" className="modal">
-            <div className="modal-box w-full">
+            <div className="modal-box w-5/6 flex flex-col gap-3 lg:w-full">
                 <h3 className="font-bold text-xl text-center">ADD ISP</h3>
 
                 <label className="form-control px-5 w-full mt-5 max-w-xs">
@@ -89,7 +89,7 @@ function AddIspModal(props) {
                     <input
                         id='date_start'
                         type="date"
-                        className={`input input-bordered ${errors.startDate ? 'input-error' : ''}`}
+                        className={`input input-bordered w-full ${errors.startDate ? 'input-error' : ''}`}
                         value={startDate}
                         onChange={e => setStartDate(e.target.value)}
                     />
@@ -103,7 +103,7 @@ function AddIspModal(props) {
                     <input
                         id='date_end'
                         type="date"
-                        className={`input input-bordered ${errors.endDate ? 'input-error' : ''}`}
+                        className={`input input-bordered w-full ${errors.endDate ? 'input-error' : ''}`}
                         value={endDate}
                         onChange={e => setEndDate(e.target.value)}
                     />
