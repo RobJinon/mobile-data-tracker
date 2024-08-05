@@ -1,8 +1,34 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from '../../firebase';
 
 function IspList(props) {
-    const [ispList, setIspList] = useState([{name: 'Globe'}, {name: 'Smart'}]);
+    const [ispList, setIspList] = useState([]);
+
+    const user = auth.currentUser;
+
+    const fetchISPs = async () => {
+        try {
+            const q = query(collection(db, 'isps'), where('id', '==', user.uid))
+    
+            const querySnapshot = await getDocs(q);
+            const fetchedISPs = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setIspList(fetchedISPs);
+            console.log(ispList)
+        }
+        catch (error) {
+            console.error("Error fetching ISPs: ", error)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchISPs();
+    }, []);
 
 
     return (
@@ -14,7 +40,7 @@ function IspList(props) {
                 </li>
             
                 {ispList.map((isp) => (
-                    <li className='w-full px-3'><a className='btn btn-primary'>{isp.name}</a></li>
+                    <li className='w-full px-3'><a className='btn btn-primary'>{isp.ispName}</a></li>
                 ))}
                 <li className='w-full px-3'>
                     <a className='btn btn-ghost' onClick={()=>document.getElementById('add_isp_modal').showModal()}>
@@ -29,7 +55,7 @@ function IspList(props) {
                     <div className='text-center w-full bg-primary py-4 text-xl text-white rounded-t-lg font-bold mb-3'>My ISPs</div>
 
                     {ispList.map((isp) => (
-                        <div className='w-5/6 px-3'><a className='btn w-full btn-primary'>{isp.name}</a></div>
+                        <div className='w-5/6 px-3'><a className='btn w-full btn-primary'>{isp.ispName}</a></div>
                     ))}
 
                     <div className='w-5/6 px-3'>
