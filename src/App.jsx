@@ -5,7 +5,8 @@ import Dashboard from './components/dashboard/Dashboard'
 import Home from './components/Home'
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { AuthProvider } from './AuthContext'
+import { AuthProvider } from './firebase'
+import { auth, useAuth } from './firebase'
 
 
 
