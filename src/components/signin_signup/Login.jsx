@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useState } from 'react';
-import { auth, googleProvider } from '../../firebase';
+import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -32,17 +32,6 @@ function Login(props) {
         }
     }
 
-    const loginWithGoogle = async () => {
-        try {
-            await signInWithPopup(googleProvider);
-            navigate("./profile");
-        }
-
-        catch (error) {
-            // setNotice();
-            console.log(error);
-        }
-    }
 
     const validateForm = () => {
         setErrors({});
