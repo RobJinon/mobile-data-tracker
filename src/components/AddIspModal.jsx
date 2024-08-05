@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
+import { db } from '../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 function AddIspModal(props) {
     const today = new Date().toISOString().split('T')[0];
+
+    const [uid, setUid] = useState("");
 
     const [ispName, setIspName] = useState("");
     const [startDate, setStartDate] = useState(today);
@@ -9,8 +14,6 @@ function AddIspModal(props) {
     const [origData, setOrigData] = useState(0);
     const [origDataUnit, setOrigDataUnit] = useState("GB");
     const [errors, setErrors] = useState({});
-
-    const [ispList, setIspList] = useState();
 
     const validateForm = () => {
         const newErrors = {};
@@ -22,6 +25,36 @@ function AddIspModal(props) {
         return newErrors;
     };
 
+    // get the currently logged in user's UID and store it at the uid state
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUid(user.uid);
+                console.log("User: " + uid + " is currently signed in.");
+            } else {
+                console.log("No user currently signed in.");
+            }
+        });
+    });
+
+    // function that will get triggered when the submit button is clicked
+    // this will store the data inputs to Firestore
+    const sendToFirestore = async() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user) {
+            await addDoc( collection(db, "isps"), {
+                id: uid,
+                ispName: ispName,
+                startDate: startDate,
+                endDate: endDate,
+                origData: origData,
+                origDataUnit: origDataUnit
+            });
+            console.log("Successfully stored the data of User " + uid + " on Firestore.");
+        };
+    };
 
     return (
         <dialog id="add_isp_modal" className="modal">
@@ -98,8 +131,8 @@ function AddIspModal(props) {
                 </label>
 
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
-                    <button className='btn btn-primary text-white'>BEGIN TRACKING MY DATA</button>
-                    <form method='dialog' className='w-full'>
+                    <form method='dialog' className='flex flex-col w-full gap-2 '>
+                        <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
                         <button className='btn bg-base-300 w-full'>CANCEL</button>
                     </form>
                 </div>
