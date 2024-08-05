@@ -2,27 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 function IspList(props) {
-    const [ispList, setIspList] = useState(() => {
-        const storedIsps = localStorage.getItem('ISPs');
-        return storedIsps ? JSON.parse(storedIsps) : [];
-    });
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-            const storedIsps = localStorage.getItem('ISPs');
-            if (storedIsps) {
-                setIspList(JSON.parse(storedIsps));
-            }
-        };
-
-        // Listen for custom event
-        window.addEventListener('ispListUpdated', handleStorageChange);
-
-        // Cleanup the event listener on component unmount
-        return () => {
-            window.removeEventListener('ispListUpdated', handleStorageChange);
-        };
-    }, []);
+    const [ispList, setIspList] = useState([{name: 'Globe'}, {name: 'Smart'}]);
 
 
     return (
