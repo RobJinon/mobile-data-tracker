@@ -10,15 +10,7 @@ function AddIspModal(props) {
     const [origDataUnit, setOrigDataUnit] = useState("GB");
     const [errors, setErrors] = useState({});
 
-    const [ispList, setIspList] = useState(() => {
-        const storedIsps = localStorage.getItem('ISPs');
-        return storedIsps ? JSON.parse(storedIsps) : [];
-    });
-
-    useEffect(() => {
-        localStorage.setItem('ISPs', JSON.stringify(ispList));
-        window.dispatchEvent(new Event('ispListUpdated'));
-    }, [ispList]);
+    const [ispList, setIspList] = useState();
 
     const validateForm = () => {
         const newErrors = {};
@@ -30,37 +22,6 @@ function AddIspModal(props) {
         return newErrors;
     };
 
-    const addISPLocal = () => {
-        const newErrors = validateForm();
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
-
-        const isp = {
-            name: ispName,
-            startDate: startDate,
-            endDate: endDate,
-            origData: parseFloat(origData),
-            origDataUnit: origDataUnit
-        };
-
-        setIspList(oldIspList => [...oldIspList, isp]);
-
-        // Clear form fields and errors
-        setIspName("");
-        setStartDate(today);
-        setEndDate(today);
-        setOrigData("");
-        setOrigDataUnit("GB");
-        setErrors({});
-
-        // Close the modal
-        const modal = document.getElementById('add_isp_modal');
-        if (modal) {
-            modal.close();
-        }
-    };
 
     return (
         <dialog id="add_isp_modal" className="modal">
@@ -137,7 +98,7 @@ function AddIspModal(props) {
                 </label>
 
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
-                    <button className='btn btn-primary text-white' onClick={addISPLocal}>BEGIN TRACKING MY DATA</button>
+                    <button className='btn btn-primary text-white'>BEGIN TRACKING MY DATA</button>
                     <form method='dialog' className='w-full'>
                         <button className='btn bg-base-300 w-full'>CANCEL</button>
                     </form>
