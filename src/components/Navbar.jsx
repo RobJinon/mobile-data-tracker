@@ -14,7 +14,7 @@ function Navbar(props) {
               
     }
 
-    const { currentUser } = useAuth();
+    const user = auth.currentUser;
     return (
         <div className="navbar bg-[#14213D] text-white mb-10 pr-20">
             <div class="flex-none  lg:hidden">
@@ -26,7 +26,7 @@ function Navbar(props) {
                 <a className="btn btn-ghost text-xl">MOBILE DATA TRACKER</a>
             </div>
             <div class="hidden lg:block lg:flex gap-4 px-5">
-                {   currentUser.isAnonymous === true || !currentUser ? <>
+                {   user.isAnonymous === true || !user ? <>
                     <Link to='/signup'>
                         <a className="btn btn-ghost text-slate-100">
                             Register
