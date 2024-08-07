@@ -7,7 +7,7 @@ import firebase from 'firebase/compat/app';
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-function Navbar(props) {
+function Navbar({onActiveISPChange}) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -65,7 +65,7 @@ function Navbar(props) {
                 }
                 
             </div>
-            <Sidebar/>
+            <Sidebar onActiveISPChange={onActiveISPChange}/>
         </div>
     );
 }

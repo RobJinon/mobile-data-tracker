@@ -19,7 +19,7 @@ function Home() {
     return (
         <div className='w-screen min-h-screen flex flex-col'>
 
-            <Navbar />
+            <Navbar onActiveISPChange={handleActiveISP}/>
 
             <div className="flex w-full justify-center">
 
