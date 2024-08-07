@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db } from '../../firebase';
 
-function IspList(props) {
+function IspList({ onActiveISPChange }) {
     const [ispList, setIspList] = useState([]);
     const [activeISP, setActiveISP] = useState(null);
 
@@ -33,6 +33,7 @@ function IspList(props) {
 
     const handleISPBtn = (ispID) => {
         setActiveISP(ispID);
+        onActiveISPChange(ispID);
     }
 
 
@@ -45,7 +46,7 @@ function IspList(props) {
                 </li>
             
                 {ispList.map((isp) => (
-                    <li className='w-full px-3'><a id={isp.ispName} className='btn btn-primary' onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></li>
+                    <li className='w-full px-3'><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></li>
                 ))}
                 <li className='w-full px-3'>
                     <a className='btn btn-ghost' onClick={()=>document.getElementById('add_isp_modal').showModal()}>
