@@ -1,4 +1,7 @@
 import React from 'react';
+import { auth } from '../../firebase';
+import { db } from '../../firebase';
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 function MobileDataInput(props) {
     return (
@@ -47,9 +50,46 @@ function DatePicker(props) {
     );
 }
 
-function InputFields({ onInput }) {
+
+function InputFields({ activeISP }) {
+
+    // function to update the data of the user on Firestore
+    const updateDocInFirestore = async(data) => {
+        const user = auth.currentUser;
+
+        // query to get the id of the active ISP (document) of the current logged in user
+        const q = query(collection(db, "isps"), where("id", "==", user.uid), where("ispName", "==", activeISP));
+        let docId = null;
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            docId = doc.id;
+        });
+
+        // the document owned by the current logged in user and active ISP
+        const docRef = doc(db, "isps", docId);
+
+        // updates the data of the document
+        await updateDoc(docRef, {
+            startDate: data["start-date"],
+            currDate: data["current-date"],
+            endDate: data["end-date"],
+            origData: data["original-data"],
+            origDataUnit: data["original-data-unit"],
+            currData: data["current-data"],
+            currDataUnit: data["current-data-unit"]
+        });
+    };
 
     function handleSubmit(e) {
+
+        // const startDate = data["start-date"];
+        // const currDate = data["current-date"];
+        // const endDate = data["end-date"];
+
+        // const origData = data["original-data"];
+        // const origDataUnit = data["original-data-unit"];
+        // const currData = data["current-data"];
+        // const currDataUnit = data["current-data-unit"];
 
         // Prevent the browser from reloading the page
         e.preventDefault();
@@ -64,8 +104,7 @@ function InputFields({ onInput }) {
         // Or you can work with it as a plain object:
         const formJson = Object.fromEntries(formData.entries());
 
-        onInput(formJson);
-
+        updateDocInFirestore(formJson);
     }
 
     return ( 

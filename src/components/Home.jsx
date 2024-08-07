@@ -12,8 +12,6 @@ function Home() {
         setActiveISP(ispName);
     }
 
-    console.log('Active ISP:', activeISP);
-
     console.log('User: ', auth.currentUser);
 
     return (
@@ -29,7 +27,7 @@ function Home() {
                         <IspList onActiveISPChange={handleActiveISP}/>
                     </div>
 
-                    <Dashboard />
+                    <Dashboard activeISP={activeISP}/>
 
                 </div>
             </div>
