@@ -5,6 +5,7 @@ import { auth, db } from '../../firebase';
 
 function IspList(props) {
     const [ispList, setIspList] = useState([]);
+    const [activeISP, setActiveISP] = useState(null);
 
     const user = auth.currentUser;
 
@@ -30,6 +31,10 @@ function IspList(props) {
         fetchISPs();
     }, []);
 
+    const handleISPBtn = (ispID) => {
+        setActiveISP(ispID);
+    }
+
 
     return (
         <div>
@@ -40,7 +45,7 @@ function IspList(props) {
                 </li>
             
                 {ispList.map((isp) => (
-                    <li className='w-full px-3'><a className='btn btn-primary'>{isp.ispName}</a></li>
+                    <li className='w-full px-3'><a id={isp.ispName} className='btn btn-primary' onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></li>
                 ))}
                 <li className='w-full px-3'>
                     <a className='btn btn-ghost' onClick={()=>document.getElementById('add_isp_modal').showModal()}>
@@ -55,7 +60,7 @@ function IspList(props) {
                     <div className='text-center w-full bg-primary py-4 text-xl text-white rounded-t-lg font-bold mb-3'>My ISPs</div>
 
                     {ispList.map((isp) => (
-                        <div className='w-5/6 px-3'><a className='btn w-full btn-primary'>{isp.ispName}</a></div>
+                        <div className='w-5/6 px-3'><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></div>
                     ))}
 
                     <div className='w-5/6 px-3'>
