@@ -31,7 +31,7 @@ function AddIspModal(props) {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUid(user.uid);
-                console.log("User: " + uid + " is currently signed in.");
+                console.log("User:", user.email, "is currently signed in.");
             } else {
                 console.log("No user currently signed in.");
             }

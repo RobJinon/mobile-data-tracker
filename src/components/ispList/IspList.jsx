@@ -1,41 +1,10 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { auth, db } from '../../firebase';
 
-function IspList({ onActiveISPChange }) {
-    const [ispList, setIspList] = useState([]);
-    const [activeISP, setActiveISP] = useState(null);
-
-    const user = auth.currentUser;
-
-    const fetchISPs = async () => {
-        try {
-            const q = query(collection(db, 'isps'), where('id', '==', user.uid))
-    
-            const querySnapshot = await getDocs(q);
-            const fetchedISPs = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setIspList(fetchedISPs);
-            console.log(ispList)
-        }
-        catch (error) {
-            console.error("Error fetching ISPs: ", error)
-        }
-
-    }
-
-    useEffect(() => {
-        fetchISPs();
-    }, []);
+function IspList({ onActiveISPChange, ispList, activeISP }) {
 
     const handleISPBtn = (ispID) => {
-        setActiveISP(ispID);
         onActiveISPChange(ispID);
     }
-
 
     return (
         <div>

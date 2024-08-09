@@ -14,7 +14,6 @@ function Dashboard(props) {
 
     const navigate = useNavigate();
     const user = auth.currentUser;
-    console.log(user);
     const [name, setName] = useState(null);
 
     const logoutUser = async (e) => {
