@@ -11,7 +11,7 @@ function Home() {
     const [activeISP, setActiveISP] = useState(null);
     const user = auth.currentUser;
 
-    const fetchISPs = async () => {
+    const fetchISPs = async (user) => {
         try {
             const q = query(collection(db, 'isps'), where('id', '==', user.uid))
     
@@ -21,7 +21,6 @@ function Home() {
                 ...doc.data()
             }));
             setIspList(fetchedISPs);
-            console.log(ispList)
         }
         catch (error) {
             console.error("Error fetching ISPs: ", error)
@@ -30,14 +29,12 @@ function Home() {
     }
 
     useEffect(() => {
-        fetchISPs();
+        fetchISPs(user);
     }, []);
 
     const handleActiveISP = (ispName) => {
         setActiveISP(ispName);
     }
-
-    console.log('User: ', auth.currentUser);
 
     return (
         <div className='w-screen min-h-screen flex flex-col'>
@@ -52,7 +49,7 @@ function Home() {
                         <IspList onActiveISPChange={handleActiveISP} ispList={ispList} activeISP={activeISP}/>
                     </div>
 
-                    <Dashboard activeISP={activeISP}/>
+                    <Dashboard activeISP={activeISP} ispList={ispList}/>
 
                 </div>
             </div>

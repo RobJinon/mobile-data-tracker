@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { auth } from '../../firebase';
 import { db } from '../../firebase';
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -7,14 +7,14 @@ function MobileDataInput(props) {
     return (
         <div className='flex flex-col gap-y-1 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[40%]">
-                <label for={props.class}>{props.name}</label>
+                <label htmlFor={props.id}>{props.name}</label>
             </div>
             <div className="join flex flex-col gap-y-1 w-full h-[60%]">
                 <div className="flex flex-row justify-start h-[60%]">
-                    <input type="number" step="any" defaultValue={0} name={props.class} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
-                    <select name={`${props.class}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
+                    <input type="number" step="any" defaultValue={props.defaultValue} name={props.id} id={props.id} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
+                    <select defaultValue="GB" name={`${props.id}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
                         <option>TB</option>
-                        <option selected>GB</option>
+                        <option>GB</option>
                         <option>MB</option>
                         <option>KB</option>
                     </select>
@@ -25,33 +25,75 @@ function MobileDataInput(props) {
 }
 
 function DatePicker(props) {
-    
-    // Today's date as default value of date picker
-    var date = new Date();
-
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    var today = year + "-" + month + "-" + day;
-
     return (
         <div className='flex flex-col justify-between gap-y-1.5 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[35%]">
-                <label for={props.class}>{props.name}</label>
+                <label htmlFor={props.id}>{props.name}</label>
             </div>
             <div className="flex flex-col w-full h-[65%]">
-                <input type="date" defaultValue={today} name={props.class} id={props.class} className="bg-white border border-primary rounded py-0.5 px-1 w-full"/>
+                <input type="date" defaultValue={props.defaultValue} name={props.id} id={props.id} className="bg-white border border-primary rounded py-0.5 px-1 w-full"/>
             </div>
         </div>
     );
 }
 
+const generateDatePickers = (datePickers, defaultValues) => {    
+    let items = [];
+    datePickers.map((datePicker, index) => (
+        items.push(<DatePicker name={datePicker[1]} id={datePicker[0]} defaultValue={defaultValues[index]} key={index}></DatePicker>)
+    ));
+    return items;
+};
 
-function InputFields({ activeISP }) {
+const generateNumInputs = (numInputs, defaultValues) => {
+    let items = [];
+    numInputs.map((numInput, index) => (
+        items.push(<MobileDataInput name={numInput[1]} id={numInput[0]} defaultValue={defaultValues[index]} key={index}></MobileDataInput>)
+    ));
+    return items;
+};
+
+function InputFields({ activeISP, ispList }) {
+
+    const dateToday = () => {
+        // Today's date as default value of date picker
+        var date = new Date();
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+
+        return today;
+    }
+
+    const datePickers = [["start-date", "Start Date"], ["current-date", "Current Date"], ["end-date", "End Date"]];
+    const numInputs = [["original-data", "Original Data"], ["current-data", "Current Data"]];
+
+    const [dateDefaultValues, setDateDefaultValues] = useState([dateToday(), dateToday(), dateToday()]);
+    const [numDefaultValues, setNumDefaultValues] = useState([10, 10]);
+
+    const getDates = (activeISP, ispList) => {
+        try {
+            if (activeISP) {
+                var isp = ispList.find((isp) => isp.ispName === activeISP);
+                setDateDefaultValues([isp.startDate, isp.currDate, isp.endDate]);
+                console.log(dateDefaultValues);
+                setNumDefaultValues([isp.origData, isp.currData]);
+                console.log(numDefaultValues);
+            }
+        } catch (error) {
+            console.error(error);
+        };
+    };
+    
+    useEffect(() => {
+        getDates(activeISP, ispList);
+    }, [])
 
     // function to update the data of the user on Firestore
     const updateDocInFirestore = async(data) => {
@@ -82,15 +124,6 @@ function InputFields({ activeISP }) {
 
     function handleSubmit(e) {
 
-        // const startDate = data["start-date"];
-        // const currDate = data["current-date"];
-        // const endDate = data["end-date"];
-
-        // const origData = data["original-data"];
-        // const origDataUnit = data["original-data-unit"];
-        // const currData = data["current-data"];
-        // const currDataUnit = data["current-data-unit"];
-
         // Prevent the browser from reloading the page
         e.preventDefault();
 
@@ -105,20 +138,22 @@ function InputFields({ activeISP }) {
         const formJson = Object.fromEntries(formData.entries());
 
         updateDocInFirestore(formJson);
-    }
+    };
 
     return ( 
         <div className="flex flex-col gap-y-6">
             <form method="post" onSubmit={handleSubmit}>
                 <div id="input-fields" className="flex flex-row lg:flex-col justify-between gap-x-0.5 lg:gap-y-5">
                     <div id="date-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
-                        <DatePicker name="Start Date" class="start-date" ></DatePicker>
-                        <DatePicker name="Current Date" class="current-date" ></DatePicker>
-                        <DatePicker name="End Date" class="end-date" ></DatePicker>
+                        {/* <DatePicker name="Start Date" id="start-date" ></DatePicker>
+                        <DatePicker name="Current Date" id="current-date" ></DatePicker>
+                        <DatePicker name="End Date" id="end-date" ></DatePicker> */}
+                        {generateDatePickers(datePickers, dateDefaultValues)}
                     </div>
                     <div id="mobile-data-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
-                        <MobileDataInput name="Original Data" class="original-data"></MobileDataInput>
-                        <MobileDataInput name="Current Data" class="current-data"></MobileDataInput>
+                        {/* <MobileDataInput name="Original Data" id="original-data"></MobileDataInput>
+                        <MobileDataInput name="Current Data" id="current-data"></MobileDataInput> */}
+                        {generateNumInputs(numInputs, numDefaultValues)}
                         <div className='flex flex-col gap-y-1 justify-end lg:w-[32%]'>
                             <button type="submit" className="btn btn-sm bg-primary text-white w-full hidden lg:block lg:self-end lg:h-[55%]">COMPUTE MY DATA</button>
                         </div>

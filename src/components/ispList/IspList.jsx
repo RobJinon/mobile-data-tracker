@@ -14,8 +14,8 @@ function IspList({ onActiveISPChange, ispList, activeISP }) {
                         <a className="btn btn-ghost  p-0 text-xl">My ISPs</a>
                 </li>
             
-                {ispList.map((isp) => (
-                    <li className='w-full px-3'><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></li>
+                {ispList.map((isp, index) => (
+                    <li className='w-full px-3' key={index}><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></li>
                 ))}
                 <li className='w-full px-3'>
                     <a className='btn btn-ghost' onClick={()=>document.getElementById('add_isp_modal').showModal()}>
@@ -29,8 +29,8 @@ function IspList({ onActiveISPChange, ispList, activeISP }) {
                 <div className='flex flex-col items-center w-full gap-4'>
                     <div className='text-center w-full bg-primary py-4 text-xl text-white rounded-t-lg font-bold mb-3'>My ISPs</div>
 
-                    {ispList.map((isp) => (
-                        <div className='w-5/6 px-3'><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></div>
+                    {ispList.map((isp, index) => (
+                        <div className='w-5/6 px-3' key={index}><a id={isp.ispName} className={`btn w-full ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName)}>{isp.ispName}</a></div>
                     ))}
 
                     <div className='w-5/6 px-3'>

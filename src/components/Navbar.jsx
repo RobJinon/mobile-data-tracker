@@ -27,22 +27,20 @@ function Navbar({ onActiveISPChange, ispList, activeISP }) {
                 setIsLoggedIn(false);
             }
         });
-
-        console.log('User logged in:', isLoggedIn)
     });
 
     const user = auth.currentUser;
     return (
         <div className="navbar bg-[#14213D] text-white mb-10 pr-20">
-            <div class="flex-none  lg:hidden">
-                <label htmlFor="my-drawer" class="btn btn-square btn-ghost text-slate-100">
+            <div className="flex-none  lg:hidden">
+                <label htmlFor="my-drawer" className="btn btn-square btn-ghost text-slate-100">
                     <MenuIcon />
                 </label>
             </div>
             <div className="flex lg:justify-start lg:flex-1">
                 <a className="btn btn-ghost text-xl">MOBILE DATA TRACKER</a>
             </div>
-            <div class="hidden lg:block lg:flex gap-4 px-5">
+            <div className="hidden lg:block lg:flex gap-4 px-5">
                 { !isLoggedIn ? <>
                     <Link to='/signup'>
                         <a className="btn btn-ghost text-slate-100">
