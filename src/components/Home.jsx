@@ -32,6 +32,19 @@ function Home() {
         fetchISPs(user);
     }, []);
 
+    // sets a default active ISP
+    useEffect(() => {
+        try {
+            if (!activeISP) {
+                setActiveISP(ispList[0].ispName);
+                console.log("Successfully set the default active ISP.");
+            }
+        } catch (error) {
+            console.error("Error setting the default active ISP: " + error);
+        }
+    });
+    
+
     const handleActiveISP = (ispName) => {
         setActiveISP(ispName);
     }
