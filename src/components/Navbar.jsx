@@ -1,6 +1,6 @@
 import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { auth } from '../firebase';
 import { useEffect, useState } from 'react';
@@ -8,12 +8,16 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function Navbar({ onActiveISPChange, ispList, activeISP }) {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         auth.signOut().catch((error) => {
             console.error('Error signing out:', error);
           });  
+        
+        console.log('User logged out');
+        navigate('/');
               
     }
 

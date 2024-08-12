@@ -88,11 +88,11 @@ function Login(props) {
                         }
                     </label>
 
-                    <button className="btn btn-sm bg-[#14213D] rounded text-white" onClick={loginWithUsernameAndPassword}>Login</button>
+                    <button className="btn mt-3 bg-[#14213D] rounded text-white" onClick={loginWithUsernameAndPassword}>Login</button>
 
-                    <Link to='/' >
+                    {/* <Link to='/' >
                         <button className="btn btn-sm bg-[#E5E5E5] w-full rounded text-slate-700">Back</button>
-                    </Link>
+                    </Link> */}
 
                     <div className='divider'></div>
 
