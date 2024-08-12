@@ -107,7 +107,7 @@ function Signup(props) {
     };
 
     const validatePassword = (password) => {
-        const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+        const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*.])(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
 
         return password.match(passwordRegex);
     }
