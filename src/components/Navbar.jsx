@@ -3,11 +3,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { auth } from '../firebase';
-import firebase from 'firebase/compat/app';
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-function Navbar({onActiveISPChange}) {
+function Navbar({ onActiveISPChange, ispList, activeISP }) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -65,7 +64,7 @@ function Navbar({onActiveISPChange}) {
                 }
                 
             </div>
-            <Sidebar onActiveISPChange={onActiveISPChange}/>
+            <Sidebar onActiveISPChange={onActiveISPChange} ispList={ispList} activeISP={activeISP}/>
         </div>
     );
 }
