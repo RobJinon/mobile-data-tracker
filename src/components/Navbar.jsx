@@ -6,7 +6,7 @@ import { auth } from '../firebase';
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-function Navbar({ onActiveISPChange, ispList, activeISP }) {
+function Navbar({ onActiveISPChange, ispList, activeISP, editISP }) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
@@ -66,7 +66,7 @@ function Navbar({ onActiveISPChange, ispList, activeISP }) {
                 }
                 
             </div>
-            <Sidebar onActiveISPChange={onActiveISPChange} ispList={ispList} activeISP={activeISP}/>
+            <Sidebar onActiveISPChange={onActiveISPChange} ispList={ispList} activeISP={activeISP} editISP={editISP}/>
         </div>
     );
 }
