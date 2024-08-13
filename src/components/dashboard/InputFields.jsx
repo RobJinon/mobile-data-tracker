@@ -76,7 +76,7 @@ function InputFields({ activeISP, ispList }) {
             if (activeISP) {
                 var isp = ispList.find((isp) => isp.ispName === activeISP);
                 console.table(isp);
-                setDateDefaultValues([isp.startDate, isp.currentDate, isp.endDate]);
+                setDateDefaultValues([isp.startDate, isp.currDate, isp.endDate]);
                 setNumDefaultValues([isp.origData, isp.currData]);
                 setUnitDefaultValues([isp.origDataUnit, isp.currDataUnit]);
             }

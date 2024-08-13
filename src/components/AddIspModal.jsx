@@ -47,7 +47,7 @@ function AddIspModal(props) {
                 id: uid,
                 ispName: ispName,
                 startDate: startDate,
-                currentDate: today,
+                currDate: today,
                 endDate: endDate,
                 origData: origData,
                 origDataUnit: origDataUnit,
