@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { auth, db } from '../../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
-function ProgressBar({ data }) {
+function ProgressBar({ activeISP }) {
 
-    var origData = data["original-data"];
-    var origDataUnit = data["original-data-unit"];
-    var currData = data["current-data"];
-    var currDataUnit = data["current-data-unit"];
+    const [origData, setOrigData] = useState();
+    const [origDataUnit, setOrigDataUnit] = useState();
+    const [currData, setCurrData] = useState();
+    const [currDataUnit, setCurrDataUnit] = useState();
+    const user = auth.currentUser;
 
-    if (!data) {
-        origData = 0;
-        currData = 0;
-        origDataUnit = "GB";
-        currDataUnit = "GB";
-    }
+    const fetchData = async(user) => {
+        try {
+            const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP))
+
+            const querySnapshot = await getDocs(q);
+            const fetchedISPs = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setOrigData(fetchedISPs[0].origData);
+            setOrigDataUnit(fetchedISPs[0].origDataUnit);
+            setCurrData(fetchedISPs[0].currData);
+            setCurrDataUnit(fetchedISPs[0].currDataUnit);
+            console.log("Successfully fetched data and displayed on the progress bar.")
+        } catch (error) {
+            console.error("Error fetching data: ", error)
+        }
+    };
+
+    useEffect(() => {
+        fetchData(user);
+    }, [activeISP]);
 
     return (
         <div className='flex flex-row gap-x-2 items-center w-full h-[30%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md'>

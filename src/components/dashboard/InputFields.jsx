@@ -4,6 +4,14 @@ import { db } from '../../firebase';
 import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 
 function MobileDataInput(props) {
+
+    // dynamically changes the default selected option of the select input field
+    useEffect(() => {
+        const selectElement = document.getElementById(`${props.id}-unit`);
+        const newValue = props.unitDefaultValue;
+        selectElement.value = newValue;
+    });
+    
     return (
         <div className='flex flex-col gap-y-1 lg:w-[32%]'>
             <div className="flex flex-row justify-start h-[40%]">
@@ -11,8 +19,8 @@ function MobileDataInput(props) {
             </div>
             <div className="join flex flex-col gap-y-1 w-full h-[60%]">
                 <div className="flex flex-row justify-start h-[60%]">
-                    <input type="number" step="any" defaultValue={props.defaultValue} name={props.id} id={props.id} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
-                    <select defaultValue="GB" name={`${props.id}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5">
+                    <input type="number" step="any" defaultValue={props.numDefaultValue} name={props.id} id={props.id} className="input input-sm bg-white border-primary rounded join-item w-full placeholder-transparent::placeholder" placeholder="Amount"/>
+                    <select defaultValue={props.unitDefaultValue} name={`${props.id}-unit`} className="select select-sm select-bordered bg-base-300 border-primary rounded join-item w-[55%] pl-1.5" id={`${props.id}-unit`}>
                         <option>TB</option>
                         <option>GB</option>
                         <option>MB</option>
@@ -45,55 +53,42 @@ const generateDatePickers = (datePickers, defaultValues) => {
     return items;
 };
 
-const generateNumInputs = (numInputs, defaultValues) => {
+const generateNumInputs = (numInputs, numDefaultValues, unitDefaultValues) => {
     let items = [];
     numInputs.map((numInput, index) => (
-        items.push(<MobileDataInput name={numInput[1]} id={numInput[0]} defaultValue={defaultValues[index]} key={index}></MobileDataInput>)
+        items.push(<MobileDataInput name={numInput[1]} id={numInput[0]} numDefaultValue={numDefaultValues[index]} unitDefaultValue={unitDefaultValues[index]} key={index}></MobileDataInput>)
     ));
     return items;
 };
 
 function InputFields({ activeISP, ispList }) {
 
-    const dateToday = () => {
-        // Today's date as default value of date picker
-        var date = new Date();
-
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-
-        if (month < 10) month = "0" + month;
-        if (day < 10) day = "0" + day;
-
-        var today = year + "-" + month + "-" + day;
-
-        return today;
-    }
-
     const datePickers = [["start-date", "Start Date"], ["current-date", "Current Date"], ["end-date", "End Date"]];
     const numInputs = [["original-data", "Original Data"], ["current-data", "Current Data"]];
 
-    const [dateDefaultValues, setDateDefaultValues] = useState([dateToday(), dateToday(), dateToday()]);
-    const [numDefaultValues, setNumDefaultValues] = useState([10, 10]);
+    const [dateDefaultValues, setDateDefaultValues] = useState([]);
+    const [numDefaultValues, setNumDefaultValues] = useState([]);
+    const [unitDefaultValues, setUnitDefaultValues] = useState([]);
 
-    const getDates = (activeISP, ispList) => {
+    // retrives ISP data from Firestore and display them as default values of the input fields
+    const displayInputs = (activeISP, ispList) => {
         try {
             if (activeISP) {
                 var isp = ispList.find((isp) => isp.ispName === activeISP);
-                setDateDefaultValues([isp.startDate, isp.currDate, isp.endDate]);
-                console.log(dateDefaultValues);
+                console.table(isp);
+                setDateDefaultValues([isp.startDate, isp.currentDate, isp.endDate]);
                 setNumDefaultValues([isp.origData, isp.currData]);
-                console.log(numDefaultValues);
+                setUnitDefaultValues([isp.origDataUnit, isp.currDataUnit]);
             }
+            console.log("Successfully displayed document data as default values of input fields.");
         } catch (error) {
-            console.error(error);
+            console.error("Error displaying document data as default values of input fields: " + error);
         };
     };
     
     useEffect(() => {
-        getDates(activeISP, ispList);
-    }, [])
+        displayInputs(activeISP, ispList);
+    }, [activeISP]);
 
     // function to update the data of the user on Firestore
     const updateDocInFirestore = async(data) => {
@@ -131,9 +126,6 @@ function InputFields({ activeISP, ispList }) {
         const form = e.target;
         const formData = new FormData(form);
 
-        // You can pass formData as a fetch body directly:
-        fetch('/submitData', { method: form.method, body: formData });
-
         // Or you can work with it as a plain object:
         const formJson = Object.fromEntries(formData.entries());
 
@@ -145,15 +137,10 @@ function InputFields({ activeISP, ispList }) {
             <form method="post" onSubmit={handleSubmit}>
                 <div id="input-fields" className="flex flex-row lg:flex-col justify-between gap-x-0.5 lg:gap-y-5">
                     <div id="date-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
-                        {/* <DatePicker name="Start Date" id="start-date" ></DatePicker>
-                        <DatePicker name="Current Date" id="current-date" ></DatePicker>
-                        <DatePicker name="End Date" id="end-date" ></DatePicker> */}
                         {generateDatePickers(datePickers, dateDefaultValues)}
                     </div>
                     <div id="mobile-data-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
-                        {/* <MobileDataInput name="Original Data" id="original-data"></MobileDataInput>
-                        <MobileDataInput name="Current Data" id="current-data"></MobileDataInput> */}
-                        {generateNumInputs(numInputs, numDefaultValues)}
+                        {generateNumInputs(numInputs, numDefaultValues, unitDefaultValues)}
                         <div className='flex flex-col gap-y-1 justify-end lg:w-[32%]'>
                             <button type="submit" className="btn btn-sm bg-primary text-white w-full hidden lg:block lg:self-end lg:h-[55%]">COMPUTE MY DATA</button>
                         </div>
