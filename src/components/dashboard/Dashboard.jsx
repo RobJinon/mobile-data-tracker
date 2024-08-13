@@ -67,7 +67,7 @@ function Dashboard({ activeISP, ispList }) {
                 {/* The setData function (which sets a value to the data variable) was passed to the InputFields component. In InputFields.jsx (child), the InputFields component would then pass its data to the setData function (i.e., onInput(formJson)) which would set the value of the data variable in the Dashboard.jsx (parent). This is a "Child to Parent" passing of data. See: https://dev.to/andydziabo/how-to-pass-data-between-sibling-components-in-react-2cjg*/}
                 <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
 
-                <ProgressBar data={data}></ProgressBar>
+                <ProgressBar activeISP={activeISP}></ProgressBar>
                 <OutputFields data={data}></OutputFields>
             </div>
         </div>      
