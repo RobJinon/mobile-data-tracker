@@ -47,9 +47,12 @@ function AddIspModal(props) {
                 id: uid,
                 ispName: ispName,
                 startDate: startDate,
+                currentDate: today,
                 endDate: endDate,
                 origData: origData,
-                origDataUnit: origDataUnit
+                origDataUnit: origDataUnit,
+                currData: 0,
+                currDataUnit: origDataUnit
             });
             console.log("Successfully stored the data of User " + uid + " on Firestore.");
         };
