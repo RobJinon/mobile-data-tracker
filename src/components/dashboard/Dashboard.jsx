@@ -60,7 +60,7 @@ function Dashboard({ activeISP, ispList }) {
     })
 
     return (
-        <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[80%] min-h-fit max-h-fit self-center'>
+        <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[80%] h-full self-center'>
             <div className='flex flex-col gap-y-6 text-center'>
                 <h1 className='text-2xl font-bold'>Welcome!</h1>
 
