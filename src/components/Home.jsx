@@ -11,6 +11,7 @@ function Home() {
     const [ispList, setIspList] = useState([]);
     const [activeISP, setActiveISP] = useState(null);
     const [editISP, setEditISP] = useState(null);
+    const [addISP, setAddISP] = useState(null);
     const user = auth.currentUser;
 
     const fetchISPs = async (user) => {
@@ -55,6 +56,10 @@ function Home() {
     const handleEditISP = (ispName, ispID) => {
         setEditISP({name: ispName, id: ispID});
     }
+
+    const handleAddISP = (ispName) => {
+        setAddISP(ispName);
+    }
     
     const refreshIspList = () => {
         fetchISPs(user);
@@ -79,7 +84,7 @@ function Home() {
                 </div>
             </div>
             
-            <AddIspModal />
+            <AddIspModal refreshISPList={refreshIspList}/>
             <EditIspModal isp={editISP} refreshISPList={refreshIspList}/>
         </div>
     );
