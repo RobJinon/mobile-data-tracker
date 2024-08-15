@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
 import { db } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
-function AddIspModal(props) {
+function AddIspModal({ refreshISPList }) {
     const today = new Date().toISOString().split('T')[0];
 
     const [uid, setUid] = useState("");
@@ -35,7 +35,15 @@ function AddIspModal(props) {
                 console.log("No user currently signed in.");
             }
         });
-    });
+    }), [];
+
+    const clearForm = () => {
+        setIspName('');
+        setStartDate(today);
+        setEndDate(today);
+        setOrigData(0);
+        setOrigDataUnit('GB');
+    }
 
     // function that will get triggered when the submit button is clicked
     // this will store the data inputs to Firestore
@@ -55,8 +63,17 @@ function AddIspModal(props) {
                 currDataUnit: origDataUnit
             });
             console.log("Successfully stored the data of User " + uid + " on Firestore.");
+
+            if (refreshISPList){
+                refreshISPList();
+            }
+
+            clearForm();
+            
         };
     };
+
+
 
     return (
         <dialog id="add_isp_modal" className="modal">
@@ -135,13 +152,13 @@ function AddIspModal(props) {
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
                     <form method='dialog' className='flex flex-col w-full gap-2 '>
                         <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
-                        <button className='btn bg-base-300 w-full'>CANCEL</button>
+                        <button className='btn bg-base-300 w-full' onClick={clearForm}>CANCEL</button>
                     </form>
                 </div>
             </div>
 
             <form method="dialog" className="modal-backdrop">
-                <button>close</button>
+                <button >close</button>
             </form>
         </dialog>
     );
