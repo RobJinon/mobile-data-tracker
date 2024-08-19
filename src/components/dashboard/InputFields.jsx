@@ -199,7 +199,7 @@ function InputFields({ onInputChange, activeISP, ispList }) {
     };
 
     return ( 
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col text-sm lg:w-[90%] h-2/5 justify-center">
             <form method="post" onSubmit={handleSubmit}>
                 <div id="input-fields" className="flex flex-row lg:flex-col justify-between gap-x-0.5 lg:gap-y-5">
                     <div id="date-fields" className="flex flex-col lg:flex-row justify-items-start lg:justify-between gap-y-2 w-[47%] lg:w-full">
@@ -213,7 +213,7 @@ function InputFields({ onInputChange, activeISP, ispList }) {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-wide bg-primary text-white w-full lg:hidden">COMPUTE MY DATA</button>
+                <button type="submit" className="btn btn-wide bg-primary text-white w-full mt-3 lg:hidden">COMPUTE MY DATA</button>
             </form>
         </div>
      );

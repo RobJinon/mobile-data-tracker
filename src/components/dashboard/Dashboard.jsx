@@ -60,17 +60,19 @@ function Dashboard({ activeISP, ispList }) {
     })
 
     return (
-        <div className='p-8 rounded-lg bg-base-200 w-11/12 lg:w-[80%] h-full self-center'>
-            <div className='flex flex-col gap-y-6 text-center'>
-                <h1 className='text-2xl font-bold'>Welcome!</h1>
+            <div className='rounded-lg px-5 bg-base-200 h-[95%]'>
+                <div className='flex flex-col items-center gap-0 h-full px-2'>
+                    <h1 className='text-3xl mt-5 mb-4 lg:mb-0 font-bold'>Welcome!</h1>
 
-                {/* The setData function (which sets a value to the data variable) was passed to the InputFields component. In InputFields.jsx (child), the InputFields component would then pass its data to the setData function (i.e., onInput(formJson)) which would set the value of the data variable in the Dashboard.jsx (parent). This is a "Child to Parent" passing of data. See: https://dev.to/andydziabo/how-to-pass-data-between-sibling-components-in-react-2cjg*/}
-                <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
+                    {/* The setData function (which sets a value to the data variable) was passed to the InputFields component. In InputFields.jsx (child), the InputFields component would then pass its data to the setData function (i.e., onInput(formJson)) which would set the value of the data variable in the Dashboard.jsx (parent). This is a "Child to Parent" passing of data. See: https://dev.to/andydziabo/how-to-pass-data-between-sibling-components-in-react-2cjg*/}
 
-                <ProgressBar activeISP={activeISP}></ProgressBar>
-                <OutputFields activeISP={activeISP}></OutputFields>
-            </div>
-        </div>      
+                    <div className="flex flex-col gap-3 lg:gap-0 justify-between pb-2 justify-center items-center w-full h-[90%] border">
+                        <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
+                        <ProgressBar activeISP={activeISP}></ProgressBar>
+                        <OutputFields data={data}></OutputFields>
+                    </div>
+                </div>
+            </div>  
     );
 }
 

@@ -170,30 +170,30 @@ function OutputFields({ activeISP }) {
     }
 
     return (
-        <div className='flex flex-col lg:flex-row bg-[#C5C5C5] p-6 rounded-md gap-y-8 lg:gap-x-10'>
-            <div className='flex flex-row justify-between gap-x-4 lg:w-[65%]'>
+        <div className='flex flex-col lg:flex-row lg:w-[90%] lg:h-2/5 bg-[#C5C5C5] px-6 py-3 rounded-md gap-y-8 lg:gap-x-10'>
+            <div className='flex flex-row justify-between items-center gap-x-4 lg:w-[65%] '>
                 <div className='image-container w-[35%] lg:w-[30%]'>
                     {selectReactionImage()}
                 </div>
                 <div className='flex flex-col gap-y-4 w-[65%] text-start leading-tight'>
                     <div className='flex flex-col justify-start items-start'>
-                        <p>You are {`${isAheadOrBehind}`}</p>
-                        <h2 className='text-2xl text-primary font-bold'>{`${Math.abs(aheadOrBehindData)} ${currDataUnit}`}</h2>
+                        <p className='text-sm'>You are {`${isAheadOrBehind}`}</p>
+                        <h2 className='text-xl text-primary font-bold'>{`${Math.abs(aheadOrBehindData)} ${currDataUnit}`}</h2>
                     </div>
                     <div className='flex flex-col justify-start items-start'>
-                        <p>To maintain original daily consumable, stop spending for</p>
-                        <h2 className='text-2xl text-primary font-bold'>{`${daysToStopSpending} days`}</h2>
+                        <p className='text-sm'>To maintain original daily consumable, stop spending for</p>
+                        <h2 className='text-xl text-primary font-bold'>{`${daysToStopSpending} days`}</h2>
                     </div>
                 </div>
             </div>
 
-            <div className='flex flex-row lg:flex-col justify-between gap-x-3 lg:w-[35%]'>
+            <div className='flex flex-row lg:flex-col justify-between gap-x-3 lg:w-[45%] py-2'>
 
                 <div className='flex flex-col lg:flex-row gap-y-3 bg-base-200 w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between'>
                     <p className='text-primary leading-tight lg:text-start lg:w-[60%] lg:self-center'>Original Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
                         <h1 className='text-primary text-4xl font-extrabold'>{`${origDailyConsumable()}`}</h1>
-                        <p className='text-primary'>{`${origDataUnit}`}</p>
+                        <p className='ml-2 text-primary'>{`${origDataUnit}`}</p>
                     </div>
                 </div>
 
@@ -201,7 +201,7 @@ function OutputFields({ activeISP }) {
                     <p className='text-white leading-tight lg:text-start lg:w-[60%] lg:self-center'>New Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
                         <h1 className='text-accent text-4xl font-extrabold'>{`${newDailyConsumable()}`}</h1>
-                        <p className='text-white'>{`${currDataUnit}`}</p>
+                        <p className='ml-2 text-white'>{`${currDataUnit}`}</p>
                     </div>
                 </div>
 

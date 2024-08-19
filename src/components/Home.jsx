@@ -73,21 +73,18 @@ function Home() {
     }
 
     return (
-        <div className='w-screen min-h-screen flex flex-col'>
+        <div className='flex flex-col items-center w-screen min-h-screen max-h-screen'>
 
             <Navbar onActiveISPChange={handleActiveISP}  ispList={ispList} activeISP={activeISP} editISP={handleEditISP} deleteISP={handleDeleteISP}/>
 
-            <div className="flex w-full justify-center">
+            <div className="flex lg:w-4/5 h-[90%] px-4 lg:px-0 justify-center gap-5 items-center">
 
-                <div className="flex flex-row justify-center gap-5 lg:w-4/5">
-
-                    <div className='rounded-lg w-[20%] bg-base-200 h-full hidden lg:block'>
-                        <IspList onActiveISPChange={handleActiveISP} ispList={ispList} activeISP={activeISP} editISP={handleEditISP} deleteISP={handleDeleteISP}/>
-                    </div>
-
-                    <Dashboard activeISP={activeISP} ispList={ispList}/>
-
+                <div className='rounded-lg w-1/3 h-[95%] bg-base-200 hidden lg:block'>
+                    <IspList onActiveISPChange={handleActiveISP} ispList={ispList} activeISP={activeISP} editISP={handleEditISP} deleteISP={handleDeleteISP}/>
                 </div>
+
+                <Dashboard activeISP={activeISP} ispList={ispList}/>
+
             </div>
             
             <AddIspModal refreshISPList={refreshIspList}/>
