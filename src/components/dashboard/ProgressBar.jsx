@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { auth, db } from '../../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 
 function ProgressBar({ activeISP }) {
 
@@ -14,17 +14,29 @@ function ProgressBar({ activeISP }) {
         try {
             const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP))
 
-            const querySnapshot = await getDocs(q);
-            const fetchedISPs = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setOrigData(fetchedISPs[0].origData);
-            setOrigDataUnit(fetchedISPs[0].origDataUnit);
-            setCurrData(fetchedISPs[0].currData);
-            setCurrDataUnit(fetchedISPs[0].currDataUnit);
-            console.log("Successfully fetched data and displayed on the progress bar. The displayed is");
-            console.table(fetchedISPs);
+            // const querySnapshot = await getDocs(q);
+
+            // Using onSnapshot method you can "listen" to a document. An initial call using the callback you provide creates a document snapshot immediately with the current contents of the single document. Then, each time the contents change, another call updates the document snapshot. TL;DR: it updates the data on the DOM without refreshing
+            const foo = onSnapshot(q, (querySnapshot) => {
+                const fetchedISPs = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                if (fetchedISPs.length > 0) {
+                    setOrigData(fetchedISPs[0].origData);
+                    setOrigDataUnit(fetchedISPs[0].origDataUnit);
+                    setCurrData(fetchedISPs[0].currData);
+                    setCurrDataUnit(fetchedISPs[0].currDataUnit);
+                    console.log("Successfully fetched data and displayed on the progress bar. The displayed is");
+                    console.table(fetchedISPs);
+                }
+            });
+
+            // const fetchedISPs = querySnapshot.docs.map(doc => ({
+            //     id: doc.id,
+            //     ...doc.data()
+            // }));
+            return () => foo();
         } catch (error) {
             console.error("Error fetching data: ", error)
         }
@@ -32,7 +44,7 @@ function ProgressBar({ activeISP }) {
 
     useEffect(() => {
         fetchData(user);
-    }, [activeISP]);
+    }, [activeISP], user.uid);
 
     return (
         <div className='flex flex-row gap-x-2 items-center w-full h-[30%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md'>
