@@ -66,7 +66,7 @@ function Navbar({ onActiveISPChange, ispList, activeISP, editISP }) {
                 }
                 
             </div>
-            <Sidebar onActiveISPChange={onActiveISPChange} ispList={ispList} activeISP={activeISP} editISP={editISP}/>
+            <Sidebar onActiveISPChange={onActiveISPChange} ispList={ispList} activeISP={activeISP} editISP={editISP} handleLogout={handleLogout}/>
         </div>
     );
 }
