@@ -23,7 +23,8 @@ function ProgressBar({ activeISP }) {
             setOrigDataUnit(fetchedISPs[0].origDataUnit);
             setCurrData(fetchedISPs[0].currData);
             setCurrDataUnit(fetchedISPs[0].currDataUnit);
-            console.log("Successfully fetched data and displayed on the progress bar.")
+            console.log("Successfully fetched data and displayed on the progress bar. The displayed is");
+            console.table(fetchedISPs);
         } catch (error) {
             console.error("Error fetching data: ", error)
         }

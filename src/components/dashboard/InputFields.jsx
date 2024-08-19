@@ -66,7 +66,9 @@ function DatePicker({ id, name, dateValue, setDateValue }) {
     );
 }
 
-function InputFields({ activeISP, ispList }) {
+function InputFields({ onInputChange, activeISP, ispList }) {
+
+    const user = auth.currentUser;
 
     const datePickers = [["start-date", "Start Date"], ["current-date", "Current Date"], ["end-date", "End Date"]];
     const numInputs = [["original-data", "Original Data"], ["current-data", "Current Data"]];
@@ -94,7 +96,7 @@ function InputFields({ activeISP, ispList }) {
         return items;
     };
 
-    const generateNumInputs = (numInputs, numValues, unitDefaultValues) => {
+    const generateNumInputs = (numInputs, numValues, unitValues) => {
         let items = [];
         numInputs.map((numInput, index) => (
             items.push(
@@ -119,19 +121,32 @@ function InputFields({ activeISP, ispList }) {
         return items;
     };
 
-    // retrives ISP data from Firestore and display them as default values of the input fields
+    // retrieves ISP data from Firestore and display them as default values of the input fields
     const loadInputDefaults = async(activeISP, ispList) => {
         try {
             if (activeISP) {
-                const isp = ispList.find((isp) => isp.ispName === activeISP);
-                console.table(isp);
-                if (isp) {
-                    setDateValues([isp.startDate, isp.currDate, isp.endDate]);
-                    setNumValues([isp.origData, isp.currData]);
-                    setUnitValues([isp.origDataUnit, isp.currDataUnit]);
+
+                // for some reason, this doesn't retrieve the latest data, hence, the data displayed when switching
+                // ISPs is also not updated
+                // const isp = ispList.find((isp) => isp.ispName === activeISP); // this is the problem
+
+                const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP))
+
+                const querySnapshot = await getDocs(q);
+                const fetchedISPs = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                console.table(fetchedISPs);
+                if (fetchedISPs) {
+                    setDateValues([fetchedISPs[0].startDate, fetchedISPs[0].currDate, fetchedISPs[0].endDate]);
+                    setNumValues([fetchedISPs[0].origData, fetchedISPs[0].currData]);
+                    setUnitValues([fetchedISPs[0].origDataUnit, fetchedISPs[0].currDataUnit]);
                 };
             };
             console.log("Successfully displayed document data as default values of input fields.");
+            onInputChange(true);
         } catch (error) {
             console.error("Error displaying document data as default values of input fields: " + error);
         };
@@ -166,6 +181,7 @@ function InputFields({ activeISP, ispList }) {
             currData: data["current-data"],
             currDataUnit: data["current-data-unit"]
         });
+        console.log("Successfully updated data on Firestore for " + activeISP);
     };
 
     function handleSubmit(e) {
