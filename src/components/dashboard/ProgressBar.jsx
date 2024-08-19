@@ -4,10 +4,10 @@ import { collection, getDocs, onSnapshot, query, where } from 'firebase/firestor
 
 function ProgressBar({ activeISP }) {
 
-    const [origData, setOrigData] = useState();
-    const [origDataUnit, setOrigDataUnit] = useState();
-    const [currData, setCurrData] = useState();
-    const [currDataUnit, setCurrDataUnit] = useState();
+    const [origData, setOrigData] = useState("");
+    const [origDataUnit, setOrigDataUnit] = useState("");
+    const [currData, setCurrData] = useState("");
+    const [currDataUnit, setCurrDataUnit] = useState("");
     const user = auth.currentUser;
 
     const fetchData = async(user) => {
@@ -16,7 +16,7 @@ function ProgressBar({ activeISP }) {
 
             // const querySnapshot = await getDocs(q);
 
-            // Using onSnapshot method you can "listen" to a document. An initial call using the callback you provide creates a document snapshot immediately with the current contents of the single document. Then, each time the contents change, another call updates the document snapshot. TL;DR: it updates the data on the DOM without refreshing
+            // Using onSnapshot method you can "listen" to a document. An initial call using the callback you provide creates a document snapshot immediately with the current contents of the single document. Then, each time the contents change, another call updates the document snapshot. TL;DR: it updates the data on the DOM without refreshing (Source: https://firebase.google.com/docs/firestore/query-data/listen)
             const foo = onSnapshot(q, (querySnapshot) => {
                 const fetchedISPs = querySnapshot.docs.map(doc => ({
                     id: doc.id,

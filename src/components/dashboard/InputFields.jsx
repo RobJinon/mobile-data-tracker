@@ -146,7 +146,6 @@ function InputFields({ onInputChange, activeISP, ispList }) {
                 };
             };
             console.log("Successfully displayed document data as default values of input fields.");
-            onInputChange(true);
         } catch (error) {
             console.error("Error displaying document data as default values of input fields: " + error);
         };

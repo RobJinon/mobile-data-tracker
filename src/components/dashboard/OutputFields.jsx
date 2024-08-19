@@ -1,42 +1,61 @@
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
+import { auth, db } from '../../firebase';
 
-function OutputFields({ data }) {
+function OutputFields({ activeISP }) {
 
-    let [origData, setOrigData] = useState(0);
+    const user = auth.currentUser;
+
+    let [origData, setOrigData] = useState("");
     let [origDataUnit, setOrigDataUnit] = useState("");
-    let [currData, setCurrData] = useState(0);
+    let [currData, setCurrData] = useState("");
     let [currDataUnit, setCurrDataUnit] = useState("");
-    
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-    var today = year + "-" + month + "-" + day;
 
-    let [startDate, setStartDate] = useState(today);
-    let [currDate, setCurrDate] = useState(today);
-    let [endDate, setEndDate] = useState(today);
+    let [startDate, setStartDate] = useState("");
+    let [currDate, setCurrDate] = useState("");
+    let [endDate, setEndDate] = useState("");
+
+    const fetchData = async(user) => {
+        try {
+            const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP));
+
+            const foo = onSnapshot(q, (querySnapshot) => {
+                const fetchedISPs = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                if (fetchedISPs.length > 0) {
+                    setStartDate(fetchedISPs[0].startDate);
+                    setCurrDate(fetchedISPs[0].currDate);
+                    setEndDate(fetchedISPs[0].endDate);
+                    setOrigData(fetchedISPs[0].origData);
+                    setOrigDataUnit(fetchedISPs[0].origDataUnit);
+                    setCurrData(fetchedISPs[0].currData);
+                    setCurrDataUnit(fetchedISPs[0].currDataUnit);
+                    console.log("Successfully fetched data to be computed and displayed on the output field. Starting computation...");
+                    console.table(fetchedISPs);
+                }
+            });
+            return () => foo();
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        };
+    };
 
     useEffect(() => {
-        // These are the contents of {data}
-        setOrigData(data["original-data"]);
-        setOrigDataUnit(data["original-data-unit"]);
-        setCurrData(data["current-data"]);
-        setCurrDataUnit(data["current-data-unit"]);
-        setStartDate(data["start-date"]);
-        setCurrDate(data["current-date"]);
-        setEndDate(data["end-date"]);
-    });
+        fetchData(user);
+    }, [activeISP, user.uid]);
 
 
     // Total amount of data consumed
-    let [consumedData, setConsumedData] = useState();
+    let [consumedData, setConsumedData] = useState("");
     useEffect(() => {
         setConsumedData(origData - currData);
     });
 
+    console.log("Do: " + origData);
+    console.log("Dc: " + currData);
+    console.log("Dx: " + consumedData);
 
     // Gets the number of days between two dates
     const timeDifference = (endDate, startDate) => {
@@ -45,52 +64,63 @@ function OutputFields({ data }) {
         // Calculating the no. of days between two dates
         let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
         return differenceInDays;
-    }
+    };
 
     // Total number of days the data should last
-    let [totalDays, setTotalDays] = useState();
+    let [totalDays, setTotalDays] = useState("");
     useEffect(() => {
         setTotalDays(timeDifference(endDate, startDate));
     });
+    console.log("To: " + totalDays);
+
     // Remaining number of days until the date the data should last
-    let [remainingDays, setRemainingDays] = useState();
+    let [remainingDays, setRemainingDays] = useState("");
     useEffect(() => {
         setRemainingDays(timeDifference(endDate, currDate));
     });
+    console.log("Tr: " + remainingDays);
 
     // The remaining data if the user is on track with their data consumption
     const expectedRemainingData = () => {
         // If the remaining data is NaN (usually due to totalDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN((remainingDays / totalDays) * origData)) {
+            console.log("De: " + 0);
             return 0;
         // If the remaining data is not NaN, return the computed remaining data
         } else {
-            return ((remainingDays / totalDays) * origData);
+            let expectedRemainingData = (remainingDays / totalDays) * origData;
+            console.log("De: " + expectedRemainingData);
+            return (expectedRemainingData);
         }
     };
 
     // The remaining data regardless if the user is on track or not with their data consumption
-    let [actualRemainingData, setActualRemainingData] = useState();
+    let [actualRemainingData, setActualRemainingData] = useState("");
     useEffect(() => {
         setActualRemainingData(origData - consumedData);
     });
+    console.log("Da: " + actualRemainingData);
 
     // The amount of data that the user is ahead or behind
     // If the value is positive, the user is ahead, if the value is negative, the user is behind
-    let [aheadOrBehindData, setAheadOrBehindData] = useState();
+    let [aheadOrBehindData, setAheadOrBehindData] = useState("");
     useEffect(() => {
         setAheadOrBehindData((actualRemainingData - expectedRemainingData()).toFixed(2));
     });
+    console.log("N: " +  aheadOrBehindData);
 
 
     // The original amount of data that can only be consumed in 1 day
     const origDailyConsumable = () => {
         // If origDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(origData / totalDays)) {
+            console.log("Ao: " + 0);
             return 0
         // If the origDailyConsumable is not NaN, return the computed value
         } else {
-            return (origData / totalDays).toFixed(2);
+            let bar = (origData / totalDays).toFixed(2);
+            console.log("Ao: " + bar);
+            return bar;
         }
     };
 
@@ -99,10 +129,13 @@ function OutputFields({ data }) {
     const newDailyConsumable = () => {
         // If newDailyConsumable is NaN (usually due to remainingDays being equal to 0 due to absence of input), return 0 by default
         if (isNaN(currData / remainingDays)) {
+            console.log("An: " + 0);
             return 0
         // If the origDailyConsumable is not NaN, return the computed value
         } else {
-            return (currData / remainingDays).toFixed(2);
+            let bar = (currData / remainingDays).toFixed(2);
+            console.log("An: " + bar);
+            return bar;
         }
     };
 

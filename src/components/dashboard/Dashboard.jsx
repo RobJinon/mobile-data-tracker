@@ -16,7 +16,7 @@ function Dashboard({ activeISP, ispList }) {
 
     const navigate = useNavigate();
     const user = auth.currentUser;
-    const [name, setName] = useState(null);
+    const [name, setName] = useState("");
 
     const logoutUser = async (e) => {
         e.preventDefault();
@@ -68,7 +68,7 @@ function Dashboard({ activeISP, ispList }) {
                 <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
 
                 <ProgressBar activeISP={activeISP}></ProgressBar>
-                <OutputFields data={data}></OutputFields>
+                <OutputFields activeISP={activeISP}></OutputFields>
             </div>
         </div>      
     );

@@ -10,10 +10,10 @@ import { auth, db } from '../firebase';
 
 function Home() {
     const [ispList, setIspList] = useState([]);
-    const [activeISP, setActiveISP] = useState(null);
-    const [editISP, setEditISP] = useState(null);
-    const [deleteISP, setDeleteISP] = useState(null);
-    const [addISP, setAddISP] = useState(null);
+    const [activeISP, setActiveISP] = useState("");
+    const [editISP, setEditISP] = useState("");
+    const [deleteISP, setDeleteISP] = useState("");
+    const [addISP, setAddISP] = useState("");
     const user = auth.currentUser;
 
     const fetchISPs = async (user) => {
@@ -46,7 +46,7 @@ function Home() {
                 console.log("Successfully set the default active ISP.");
             }
         } catch (error) {
-            console.error("Error setting the default active ISP: " + error);
+            console.error("Error setting the default active ISP.");
         }
     });
     
