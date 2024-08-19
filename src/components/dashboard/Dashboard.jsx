@@ -69,7 +69,7 @@ function Dashboard({ activeISP, ispList }) {
                     <div className="flex flex-col gap-3 lg:gap-0 justify-between pb-2 justify-center items-center w-full h-[90%] border">
                         <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
                         <ProgressBar activeISP={activeISP}></ProgressBar>
-                        <OutputFields data={data}></OutputFields>
+                        <OutputFields activeISP={activeISP}></OutputFields>
                     </div>
                 </div>
             </div>  
