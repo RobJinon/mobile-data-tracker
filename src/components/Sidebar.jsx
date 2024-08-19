@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import IspList from './ispList/IspList';
 
-function Sidebar({ onActiveISPChange, ispList, activeISP, editISP, handleLogout }) {
+function Sidebar({ onActiveISPChange, ispList, activeISP, editISP, deleteISP, handleLogout }) {
     return (
         <div className="drawer lg:hidden">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -12,7 +12,7 @@ function Sidebar({ onActiveISPChange, ispList, activeISP, editISP, handleLogout 
 
                 <ul className="menu flex flex-col p-0 justify-between bg-base-200 text-base-content min-h-full w-80">
                     {/* Sidebar top */}
-                    <IspList onActiveISPChange={onActiveISPChange}  ispList={ispList} activeISP={activeISP} editISP={editISP}/>
+                    <IspList onActiveISPChange={onActiveISPChange}  ispList={ispList} activeISP={activeISP} editISP={editISP} deleteISP={deleteISP}/>
 
                     {/* Sidebar bottom */}
                     <div className='flex flex-col w-full gap-2 p-3 items-center justify-center'>
