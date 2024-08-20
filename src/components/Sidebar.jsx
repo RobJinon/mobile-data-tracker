@@ -4,7 +4,7 @@ import IspList from './ispList/IspList';
 
 function Sidebar({ onActiveISPChange, ispList, activeISP, editISP, deleteISP, handleLogout }) {
     return (
-        <div className="drawer lg:hidden">
+        <div className="drawer lg:hidden md:hidden">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
 
             <div className="drawer-side z-50">

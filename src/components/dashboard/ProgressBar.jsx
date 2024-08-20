@@ -87,11 +87,11 @@ function ProgressBar({ activeISP }) {
     const origConverted = convertFromMB(convertToMB(origData, origDataUnit));
 
     return (
-        <div className={`${isDataLoaded ? 'visible' : 'skeleton'} flex flex-row gap-x-2 items-center w-full lg:w-[90%] h-[10%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md`}>
-            <progress className={`${isDataLoaded ? 'visible' : 'hidden'} progress progress-primary w-[70%]`} value={convertToMB(currData, currDataUnit)} max={convertToMB(origData, origDataUnit)}></progress>
-            <div className={`${isDataLoaded ? 'visible' : 'hidden'} flex flex-col items-end w-[30%] leading-none`}>
-                <h2 className='text-xl text-primary font-bold leading-none'>{`${(Number(currConverted.value)).toFixed(2)} ${currConverted.unit || "GB"}`}</h2>
-                <p>{`${(Number(origConverted.value)).toFixed(2)} ${origConverted.unit || "GB"}`}</p>
+        <div className={`${isDataLoaded ? 'visible' : 'skeleton'} flex flex-row gap-x-2 items-center w-full lg:w-[90%] md:w-full h-[10%] bg-[#C5C5C5] p-4 lg:py-8 rounded-md`}>
+            <progress className={`${isDataLoaded ? 'visible' : 'invisible'} progress progress-primary w-[70%]`} value={convertToMB(currData, currDataUnit)} max={convertToMB(origData, origDataUnit)}></progress>
+            <div className={`${isDataLoaded ? 'visible' : 'invisible'} flex flex-col items-end w-[30%] leading-none`}>
+                <h2 className='text-lg text-primary font-bold leading-none'>{`${(Number(currConverted.value)).toFixed(2)} ${currConverted.unit || "GB"}`}</h2>
+                <p className='text-sm'>{`${(Number(origConverted.value)).toFixed(2)} ${origConverted.unit || "GB"}`}</p>
             </div>
         </div>
     );

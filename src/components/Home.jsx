@@ -79,7 +79,7 @@ function Home() {
 
             <div className="flex lg:w-4/5 h-[90%] px-4 lg:px-0 justify-center gap-5 items-center">
 
-                <div className='rounded-lg w-1/3 h-[95%] bg-base-200 hidden lg:block'>
+                <div className='rounded-lg w-1/3 h-[95%] bg-base-200 hidden lg:block md:block'>
                     <IspList onActiveISPChange={handleActiveISP} ispList={ispList} activeISP={activeISP} editISP={handleEditISP} deleteISP={handleDeleteISP}/>
                 </div>
 

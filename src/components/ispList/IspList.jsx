@@ -20,7 +20,7 @@ function IspList({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) 
     return (
         <div className='h-full'>
 
-            <div className='flex flex-col w-full items-center gap-2 justify-items-center justify-center lg:hidden'>
+            <div className='flex flex-col w-full items-center gap-2 justify-items-center justify-center lg:hidden md:hidden'>
                 <li className='text-white navbar bg-primary'>
                         <a className="btn btn-ghost  p-0 text-xl">My ISPs</a>
                 </li>
@@ -44,7 +44,7 @@ function IspList({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) 
                 </li>
             </div>
 
-            <div className='w-full h-full hidden lg:flex lg:flex-col justify-stretch gap-2 items-center w-full h-full pb-3'>
+            <div className='w-full h-full hidden lg:flex lg:flex-col md:flex md:flex-col justify-stretch gap-2 items-center w-full h-full pb-3'>
                     <div className='text-center w-full bg-primary py-4 text-xl text-white rounded-t-lg font-bold'>My ISPs</div>
                     
                     <div className="flex flex-col items-center gap-2 w-full py-2 overflow-y-auto">

@@ -37,7 +37,7 @@ function Navbar({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) {
     return (
         <div className="navbar bg-[#14213D] text-white h-1/8 pr-20">
             <div className="flex-none  lg:hidden">
-                <label htmlFor="my-drawer" className="btn btn-square btn-ghost text-slate-100">
+                <label htmlFor="my-drawer" className="btn btn-square btn-ghost text-slate-100 md:hidden">
                     <MenuIcon />
                 </label>
             </div>

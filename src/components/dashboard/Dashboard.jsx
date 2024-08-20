@@ -60,13 +60,15 @@ function Dashboard({ activeISP, ispList }) {
     })
 
     return (
-            <div className='rounded-lg px-5 bg-base-200 h-[95%]'>
+            <div className='rounded-lg px-5 bg-base-200 h-[95%] lg:w-full md:w-[50%]'>
                 <div className='flex flex-col items-center gap-0 h-full px-2'>
-                    <h1 className='text-3xl mt-5 mb-4 lg:mb-0 font-bold'>Welcome!</h1>
+                    <div className="w-full lg:px-8 lg:pt-4">
+                        <h1 className='text-3xl mt-5 mb-4 lg:mb-0 font-bold'>Welcome!</h1>
+                    </div>
 
                     {/* The setData function (which sets a value to the data variable) was passed to the InputFields component. In InputFields.jsx (child), the InputFields component would then pass its data to the setData function (i.e., onInput(formJson)) which would set the value of the data variable in the Dashboard.jsx (parent). This is a "Child to Parent" passing of data. See: https://dev.to/andydziabo/how-to-pass-data-between-sibling-components-in-react-2cjg*/}
 
-                    <div className="flex flex-col gap-3 lg:gap-0 justify-between pb-2 justify-center items-center w-full h-[90%] border">
+                    <div className="flex flex-col gap-3 lg:gap-0 justify-between pb-2 justify-center items-center w-full h-[90%]">
                         <InputFields onInput={setData} activeISP={activeISP} ispList={ispList}></InputFields>
                         <ProgressBar activeISP={activeISP} ispList={ispList}></ProgressBar>
                         <OutputFields activeISP={activeISP} ispList={ispList}></OutputFields>
