@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useState } from 'react';
-import { auth, googleProvider } from '../../firebase';
+import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -32,17 +32,6 @@ function Login(props) {
         }
     }
 
-    const loginWithGoogle = async () => {
-        try {
-            await signInWithPopup(googleProvider);
-            navigate("./profile");
-        }
-
-        catch (error) {
-            // setNotice();
-            console.log(error);
-        }
-    }
 
     const validateForm = () => {
         setErrors({});
@@ -99,11 +88,11 @@ function Login(props) {
                         }
                     </label>
 
-                    <button className="btn btn-sm bg-[#14213D] rounded text-white" onClick={loginWithUsernameAndPassword}>Login</button>
+                    <button className="btn mt-3 bg-[#14213D] rounded text-white" onClick={loginWithUsernameAndPassword}>Login</button>
 
-                    <Link to='/' >
+                    {/* <Link to='/' >
                         <button className="btn btn-sm bg-[#E5E5E5] w-full rounded text-slate-700">Back</button>
-                    </Link>
+                    </Link> */}
 
                     <div className='divider'></div>
 

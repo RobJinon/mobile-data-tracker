@@ -2,7 +2,9 @@ import React from 'react';
 
 import { useState } from 'react';
 import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword, validatePassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../../firebase';
+import { setDoc, addDoc, collection } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Signup(props) {
@@ -12,6 +14,23 @@ function Signup(props) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const [notice, setNotice] = useState();
+
+    // const sendToFirestore = async() => {
+    //     const auth = getAuth();
+    //     const user = auth.currentUser;
+    //     if (user) {
+    //         await addDoc( collection(db, "isps"), {
+    //             id: user.uid,
+    //             ispName: ispName,
+    //             startDate: startDate,
+    //             endDate: endDate,
+    //             origData: origData,
+    //             origDataUnit: origDataUnit
+    //         });
+    //         console.log("Successfully stored the data of User " + uid + " on Firestore.");
+    //     };
+    // };
     
     const signupWithUsernameAndPassword = async (e) => {
         e.preventDefault();
@@ -23,11 +42,37 @@ function Signup(props) {
         }
 
         if (password === confirmPassword) {
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                navigate("/");
+
+            const dateToday = () => {
+                // Today's date as default value of date picker
+                var date = new Date();
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                if (month < 10) month = "0" + month;
+                if (day < 10) day = "0" + day;
+                var today = year + "-" + month + "-" + day;
+                return today;
             }
 
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                console.log("Creating a document...");
+                await addDoc(collection(db, "isps"), {
+                    id: user.uid,
+                    ispName: "My ISP",
+                    startDate: dateToday(),
+                    currentDate: dateToday(),
+                    endDate: dateToday(),
+                    origData: 0,
+                    origDataUnit: "GB",
+                    currData: 0,
+                    currDataUnit: "GB"
+                });
+                console.log("Successfully stored the data of User " + user.uid + " on Firestore.");
+                navigate("/home");
+            }
             catch {
                 setNotice("Sorry, something went wrong. Please try again.");
             }
@@ -62,7 +107,7 @@ function Signup(props) {
     };
 
     const validatePassword = (password) => {
-        const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+        const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*.])(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
 
         return password.match(passwordRegex);
     }

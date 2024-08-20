@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "test-8bddd"
+  },
+  "targets": {},
+  "etags": {
+    "test-8bddd": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
+}
