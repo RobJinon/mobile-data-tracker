@@ -147,6 +147,7 @@ function OutputFields({ activeISP }) {
         if (aheadOrBehindData >= 0) {
             // Says "You are [ahead by]" when aheadOrBehindData is positive (ahead)
             setIsAheadOrBehind("ahead by");
+            setDaysToStopSpending(0);
         } else if (aheadOrBehindData < 0) {
             // Says "You are [behind by]" when aheadOrBehindData is negative (behind)
             setIsAheadOrBehind("behind by");
