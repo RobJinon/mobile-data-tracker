@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
 import { db } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
-function AddIspModal({ refreshISPList }) {
+function AddIspModal({ ispList, refreshISPList }) {
     const today = new Date().toISOString().split('T')[0];
 
     const [uid, setUid] = useState("");
@@ -14,7 +14,9 @@ function AddIspModal({ refreshISPList }) {
     const [origData, setOrigData] = useState(0);
     const [origDataUnit, setOrigDataUnit] = useState("GB");
     const [errors, setErrors] = useState({});
+    const [ispExists, setIspExists] = useState(false);
 
+    // checks the form for input errors
     const validateForm = () => {
         const newErrors = {};
         if (!ispName) newErrors.ispName = "ISP name is required";
@@ -24,6 +26,12 @@ function AddIspModal({ refreshISPList }) {
         if (origData <= 0) newErrors.origData = "Amount must be greater than 0";
         return newErrors;
     };
+
+    // Checks if the new ISP already exists in the list of ISPs
+    const isOnISPList = (ispName) => {
+        const exists = ispList.some(isp => isp.ispName === ispName);
+        setIspExists(exists);
+    }
 
     // get the currently logged in user's UID and store it at the uid state
     useEffect(() => {
@@ -37,20 +45,31 @@ function AddIspModal({ refreshISPList }) {
         });
     }), [];
 
+    useEffect(() => {
+        if (ispName) {
+            isOnISPList(ispName);
+        }
+    }, [ispName]);
+
+    // Clears the form if 'Cancel' button is clicked or ISP is added successfully
     const clearForm = () => {
         setIspName('');
         setStartDate(today);
         setEndDate(today);
         setOrigData(0);
         setOrigDataUnit('GB');
+        setErrors({})
     }
 
-    // function that will get triggered when the submit button is clicked
-    // this will store the data inputs to Firestore
+    // Stores data to firestore if there are no validation errors
     const sendToFirestore = async() => {
         const auth = getAuth();
         const user = auth.currentUser;
-        if (user) {
+
+        const validationErrors = validateForm;
+        setErrors(validationErrors);
+
+        if (user && Object.keys(validationErrors).length === 0 && !ispExists) {
             await addDoc( collection(db, "isps"), {
                 id: uid,
                 ispName: ispName,
@@ -69,7 +88,8 @@ function AddIspModal({ refreshISPList }) {
             }
 
             clearForm();
-            
+            setIspExists(false);
+            document.getElementById('add_isp_modal').close()
         };
     };
 
@@ -88,11 +108,13 @@ function AddIspModal({ refreshISPList }) {
                         id='isp_name'
                         type="text"
                         placeholder="ISP Name"
-                        className={`input input-bordered w-full max-w-xs ${errors.ispName ? 'input-error' : ''}`}
+                        className={`input input-bordered w-full max-w-xs ${errors.ispName || ispExists ? 'input-error' : ''}`}
                         value={ispName}
                         onChange={e => setIspName(e.target.value)}
+                        maxLength='10'
                     />
                     {errors.ispName && <span className="text-error">{errors.ispName}</span>}
+                    {ispExists ? <span className="text-error">ISP already exists</span>:<></>}
                 </label>
 
                 <label className="form-control px-5 w-full max-w-xs">
@@ -150,8 +172,8 @@ function AddIspModal({ refreshISPList }) {
                 </label>
 
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
+                    <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
                     <form method='dialog' className='flex flex-col w-full gap-2 '>
-                        <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
                         <button className='btn bg-base-300 w-full' onClick={clearForm}>CANCEL</button>
                     </form>
                 </div>

@@ -87,7 +87,7 @@ function Home() {
 
             </div>
             
-            <AddIspModal refreshISPList={refreshIspList}/>
+            <AddIspModal ispList={ispList} refreshISPList={refreshIspList}/>
             <EditIspModal isp={editISP} refreshISPList={refreshIspList}/>
             <DeleteIspModal isp={deleteISP} refreshISPList={refreshIspList}/>
         </div>
