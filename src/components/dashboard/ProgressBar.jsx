@@ -10,6 +10,20 @@ function ProgressBar({ activeISP }) {
     const [currDataUnit, setCurrDataUnit] = useState("");
     const user = auth.currentUser;
 
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+    const toggleIsDataLoaded = () => {
+        if (currData) {
+            setIsDataLoaded(true);
+        } else {
+            setIsDataLoaded(false);
+        };
+    };
+
+    useEffect(() => {
+        toggleIsDataLoaded();
+    });
+
     const fetchData = async(user) => {
         try {
             const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP))
@@ -47,11 +61,11 @@ function ProgressBar({ activeISP }) {
     }, [activeISP], user.uid);
 
     return (
-        <div className='flex flex-row gap-x-2 items-center w-full lg:w-[90%] h-[10%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md'>
-            <progress className="progress progress-primary w-[70%]" value={currData} max={origData}></progress>
-            <div className='flex flex-col items-end w-[30%] leading-none'>
-                <h2 className='text-xl text-primary font-bold leading-none'>{`${(Number(currData)).toFixed(2)} ${currDataUnit}`}</h2>
-                <p>{`${(Number(origData)).toFixed(2)} ${origDataUnit}`}</p>
+        <div className={`${isDataLoaded ? 'visible' : 'skeleton'} flex flex-row gap-x-2 items-center w-full lg:w-[90%] h-[10%] bg-[#C5C5C5] p-4 lg:py-2 rounded-md`}>
+            <progress className={`${isDataLoaded ? 'visible' : 'hidden'} progress progress-primary w-[70%]`} value={currData} max={origData}></progress>
+            <div className={`${isDataLoaded ? 'visible' : 'hidden'} flex flex-col items-end w-[30%] leading-none`}>
+                <h2 className='text-xl text-primary font-bold leading-none'>{`${(Number(currData)).toFixed(2)} ${currDataUnit || "GB"}`}</h2>
+                <p>{`${(Number(origData)).toFixed(2)} ${origDataUnit || "GB"}`}</p>
             </div>
         </div>
     );

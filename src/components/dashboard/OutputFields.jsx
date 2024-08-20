@@ -15,6 +15,21 @@ function OutputFields({ activeISP }) {
     let [currDate, setCurrDate] = useState("");
     let [endDate, setEndDate] = useState("");
 
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const [fetchedISPs, setFetchedISPs] = useState("");
+
+    const toggleIsDataLoaded = () => {
+        if (fetchedISPs.length > 0) {
+            setIsDataLoaded(true);
+        } else {
+            setIsDataLoaded(false);
+        };
+    };
+
+    useEffect(() => {
+        toggleIsDataLoaded();
+    });
+
     const fetchData = async(user) => {
         try {
             const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP));
@@ -24,6 +39,7 @@ function OutputFields({ activeISP }) {
                     id: doc.id,
                     ...doc.data()
                 }));
+                setFetchedISPs(fetchedISPs);
                 if (fetchedISPs.length > 0) {
                     setStartDate(fetchedISPs[0].startDate);
                     setCurrDate(fetchedISPs[0].currDate);
@@ -171,17 +187,17 @@ function OutputFields({ activeISP }) {
     }
 
     return (
-        <div className='flex flex-col lg:flex-row lg:w-[90%] lg:h-2/5 bg-[#C5C5C5] px-6 py-3 rounded-md gap-y-8 lg:gap-x-10'>
-            <div className='flex flex-row justify-between items-center gap-x-4 lg:w-[65%] '>
-                <div className='image-container w-[35%] lg:w-[30%]'>
+        <div className={`${isDataLoaded ? 'visible' : 'skeleton'} flex flex-col lg:flex-row lg:w-[90%] lg:h-2/5 bg-[#C5C5C5] px-6 py-3 rounded-md gap-y-8 lg:gap-x-10`}>
+            <div className={`flex flex-row justify-between items-center gap-x-4 lg:w-[65%]`}>
+                <div className={`${isDataLoaded ? 'visible' : 'invisible'} image-container w-[35%] lg:w-[30%]`}>
                     {selectReactionImage()}
                 </div>
-                <div className='flex flex-col gap-y-4 w-[65%] text-start leading-tight'>
-                    <div className='flex flex-col justify-start items-start'>
-                        <p className='text-sm'>You are {`${isAheadOrBehind}`}</p>
+                <div className={`flex flex-col gap-y-4 w-[65%] text-start leading-tight`}>
+                    <div className={`${isDataLoaded ? 'visible' : 'invisible'} flex flex-col justify-start items-start`}>
+                        <p className={`text-sm`}>You are {`${isAheadOrBehind}`}</p>
                         <h2 className='text-xl text-primary font-bold'>{`${Math.abs(aheadOrBehindData)} ${currDataUnit}`}</h2>
                     </div>
-                    <div className='flex flex-col justify-start items-start'>
+                    <div className={`${isDataLoaded ? 'visible' : 'invisible'} flex flex-col justify-start items-start`}>
                         <p className='text-sm'>To maintain original daily consumable, stop spending for</p>
                         <h2 className='text-xl text-primary font-bold'>{`${daysToStopSpending} days`}</h2>
                     </div>
@@ -190,19 +206,19 @@ function OutputFields({ activeISP }) {
 
             <div className='flex flex-row lg:flex-col justify-between gap-x-3 lg:w-[45%] py-2'>
 
-                <div className='flex flex-col lg:flex-row gap-y-3 bg-base-200 w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between'>
-                    <p className='text-primary leading-tight lg:text-start lg:w-[60%] lg:self-center'>Original Daily Consumable</p>
+                <div className={`${isDataLoaded ? 'visible' : 'invisible'} flex flex-col lg:flex-row gap-y-3 bg-base-200 w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between`}>
+                    <p className={`text-primary leading-tight lg:text-start lg:w-[60%] lg:self-center`}>Original Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
-                        <h1 className='text-primary text-4xl font-extrabold'>{`${origDailyConsumable()}`}</h1>
-                        <p className='ml-2 text-primary'>{`${origDataUnit}`}</p>
+                        <h1 className='text-primary text-4xl font-extrabold'>{`${Number(origDailyConsumable()).toFixed(2)}`}</h1>
+                        <p className='ml-2 text-primary'>{`${origDataUnit || "GB"}`}</p>
                     </div>
                 </div>
 
-                <div className='flex flex-col lg:flex-row gap-y-3 bg-primary w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between'>
+                <div className={`${isDataLoaded ? 'visible' : 'invisible'} flex flex-col lg:flex-row gap-y-3 bg-primary w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between`}>
                     <p className='text-white leading-tight lg:text-start lg:w-[60%] lg:self-center'>New Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
-                        <h1 className='text-accent text-4xl font-extrabold'>{`${newDailyConsumable()}`}</h1>
-                        <p className='ml-2 text-white'>{`${currDataUnit}`}</p>
+                        <h1 className='text-accent text-4xl font-extrabold'>{`${Number(newDailyConsumable()).toFixed(2)}`}</h1>
+                        <p className='ml-2 text-white'>{`${currDataUnit || "GB"}`}</p>
                     </div>
                 </div>
 
