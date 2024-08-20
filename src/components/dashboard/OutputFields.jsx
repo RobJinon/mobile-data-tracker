@@ -15,6 +15,32 @@ function OutputFields({ activeISP }) {
     let [currDate, setCurrDate] = useState("");
     let [endDate, setEndDate] = useState("");
 
+    const convertToMB = (value, unit) => {
+        switch (unit) {
+            case 'TB':
+                return value * 1000 * 1000;
+            case 'GB':
+                return value * 1000;
+            case 'MB':
+                return value;
+            default:
+                return 0;
+        }
+    }
+
+    const convertFromMB = (value) => {
+        const numericValue = parseFloat(value); // Ensure value is a number
+        if (isNaN(numericValue)) return { value: 0, unit: 'MB' };
+
+        if (numericValue >= 1000000) {
+            return { value: (numericValue / 1000000).toFixed(2), unit: 'TB' };
+        } else if (numericValue >= 1000) {
+            return { value: (numericValue / 1000).toFixed(2), unit: 'GB' };
+        } else {
+            return { value: numericValue.toFixed(2), unit: 'MB' };
+        }
+    };
+
     const fetchData = async(user) => {
         try {
             const q = query(collection(db, 'isps'), where('id', '==', user.uid), where('ispName', '==', activeISP));
@@ -28,10 +54,12 @@ function OutputFields({ activeISP }) {
                     setStartDate(fetchedISPs[0].startDate);
                     setCurrDate(fetchedISPs[0].currDate);
                     setEndDate(fetchedISPs[0].endDate);
-                    setOrigData(fetchedISPs[0].origData);
-                    setOrigDataUnit(fetchedISPs[0].origDataUnit);
-                    setCurrData(fetchedISPs[0].currData);
-                    setCurrDataUnit(fetchedISPs[0].currDataUnit);
+                    setOrigData(convertToMB(fetchedISPs[0].origData, fetchedISPs[0].origDataUnit));
+                    setOrigDataUnit('MB');
+                    setCurrData(convertToMB(fetchedISPs[0].currData, fetchedISPs[0].currDataUnit));
+                    setCurrDataUnit('MB');
+
+
                     console.log("Successfully fetched data to be computed and displayed on the output field. Starting computation...");
                     console.table(fetchedISPs);
                 }
@@ -179,7 +207,7 @@ function OutputFields({ activeISP }) {
                 <div className='flex flex-col gap-y-4 w-[65%] text-start leading-tight'>
                     <div className='flex flex-col justify-start items-start'>
                         <p className='text-sm'>You are {`${isAheadOrBehind}`}</p>
-                        <h2 className='text-xl text-primary font-bold'>{`${Math.abs(aheadOrBehindData)} ${currDataUnit}`}</h2>
+                        <h2 className='text-xl text-primary font-bold'>{`${convertFromMB(Math.abs(aheadOrBehindData)).value} ${convertFromMB(Math.abs(aheadOrBehindData)).unit}`}</h2>
                     </div>
                     <div className='flex flex-col justify-start items-start'>
                         <p className='text-sm'>To maintain original daily consumable, stop spending for</p>
@@ -193,16 +221,16 @@ function OutputFields({ activeISP }) {
                 <div className='flex flex-col lg:flex-row gap-y-3 bg-base-200 w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between'>
                     <p className='text-primary leading-tight lg:text-start lg:w-[60%] lg:self-center'>Original Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
-                        <h1 className='text-primary text-4xl font-extrabold'>{`${origDailyConsumable()}`}</h1>
-                        <p className='ml-2 text-primary'>{`${origDataUnit}`}</p>
+                        <h1 className='text-primary text-4xl font-extrabold'>{`${convertFromMB(origDailyConsumable()).value}`}</h1>
+                        <p className='ml-2 text-primary'>{`${convertFromMB(origDailyConsumable()).unit}`}</p>
                     </div>
                 </div>
 
                 <div className='flex flex-col lg:flex-row gap-y-3 bg-primary w-[50%] lg:w-full lg:h-[48%] p-3 lg:py-1 rounded-md lg:justify-between'>
                     <p className='text-white leading-tight lg:text-start lg:w-[60%] lg:self-center'>New Daily Consumable</p>
                     <div className='lg:flex lg:flex-row lg:items-center'>
-                        <h1 className='text-accent text-4xl font-extrabold'>{`${newDailyConsumable()}`}</h1>
-                        <p className='ml-2 text-white'>{`${currDataUnit}`}</p>
+                        <h1 className='text-accent text-4xl font-extrabold'>{`${convertFromMB(newDailyConsumable()).value}`}</h1>
+                        <p className='ml-2 text-white'>{`${convertFromMB(newDailyConsumable()).unit}`}</p>
                     </div>
                 </div>
 
