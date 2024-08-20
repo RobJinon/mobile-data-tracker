@@ -43,6 +43,7 @@ function AddIspModal({ refreshISPList }) {
         setEndDate(today);
         setOrigData(0);
         setOrigDataUnit('GB');
+        setErrors({})
     }
 
     // function that will get triggered when the submit button is clicked
@@ -50,7 +51,10 @@ function AddIspModal({ refreshISPList }) {
     const sendToFirestore = async() => {
         const auth = getAuth();
         const user = auth.currentUser;
-        if (user) {
+
+        setErrors(validateForm);
+
+        if (user && errors.length === 0) {
             await addDoc( collection(db, "isps"), {
                 id: uid,
                 ispName: ispName,
@@ -150,8 +154,8 @@ function AddIspModal({ refreshISPList }) {
                 </label>
 
                 <div className="flex flex-col w-full my-4 gap-2 p-5">
+                    <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
                     <form method='dialog' className='flex flex-col w-full gap-2 '>
-                        <button className='btn btn-primary text-white w-full' onClick={sendToFirestore}>BEGIN TRACKING MY DATA</button>
                         <button className='btn bg-base-300 w-full' onClick={clearForm}>CANCEL</button>
                     </form>
                 </div>
