@@ -206,11 +206,11 @@ function OutputFields({ activeISP }) {
     // Creates a dynamic image that changes based on different conditions
     const selectReactionImage = () => {
         if (aheadOrBehindData > 0) {
-            return (<img id="reaction-image" src="asset/positive-gif.gif"/>);
+            return (<img id="reaction-image" src="assets/positive-gif.svg"/>);
         } else if (aheadOrBehindData < 0) {
-            return (<img id="reaction-image" src="asset/negative-gif.gif"/>);
+            return (<img id="reaction-image" src="assets/negative-gif.svg"/>);
         } else {
-            return (<img id="reaction-image" src="asset/neutral-gif.gif"/>);
+            return (<img id="reaction-image" src="assets/neutral-gif.svg"/>);
         }
     }
 
