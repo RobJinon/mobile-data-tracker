@@ -22,17 +22,20 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-exports.updateCurrentDate = functions.pubsub.schedule('every day 00:00').timeZone('Asia/Manila').onRun(async(context) => {
+exports.updateCurrentDate = functions.pubsub.schedule('0 5 * * *').timeZone('Asia/Manila').onRun(async(context) => {
     const db = admin.firestore();
-    const currDate = new Date().toISOString().split('T')[0]; // format date as YYYY-MM-DD
+    const currentDate = new Date().toISOString().split('T')[0]; // format date as YYYY-MM-DD
+    
     try {
         const ispsRef = db.collection('isps');
         const snapshot = await ispsRef.get();
         const batch = db.batch();
+
         snapshot.forEach(doc => {
             const docRef = ispsRef.doc(doc.id);
-            batch.update(docRef, { currDate });
+            batch.update(docRef, { currDate: currentDate });
         });
+
         await batch.commit();
         console.log("Successfully updated currDate for all documents");
     } catch (error) {
