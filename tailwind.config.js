@@ -33,15 +33,27 @@ export default {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        light_mode: {
           "primary": "#14213D",
           "base-200": "#E6E6E6",
           "base-300": "#D9D9D9",
           "base-400": "#C5C5C5",
           "accent": "#FCA311",
           "base-100": "#F6F6F6"
+        },
+      },
+
+      {
+        dark_mode: {
+          "primary": "#253e74",
+          "base-200": "#333333",
+          "base-300": "#cccccc",
+          "base-400": "#292524",
+          "accent": "#FCA311",
+          "base-100": "#292524"
         }
-      }
+      },
+      'dark',
     ],
   },
   

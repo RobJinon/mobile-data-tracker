@@ -2,6 +2,8 @@ import React from 'react';
 
 function IspList({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) {
 
+    const theme = localStorage.getItem('theme')
+
     const handleISPBtn = (ispID) => {
         onActiveISPChange(ispID);
     }
@@ -27,7 +29,7 @@ function IspList({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) 
             
                 {ispList.map((isp, index) => (
                     <li className='w-full px-3' key={index}>
-                        <div id={isp.ispName} className={`btn group w-full flex hover:justify-between  ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName, isp.id)}>
+                        <div id={isp.ispName} className={`btn group w-full flex hover:justify-between  ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'} ${theme === 'dark_mode' && activeISP === isp.ispName ? 'text-base-100' : ''} ${theme === 'light_mode' && activeISP === isp.ispName ? 'text-[#292524]' : ''}`} onClick={()=>handleISPBtn(isp.ispName, isp.id)}>
                                 {isp.ispName}
                                 
                                 <a className='hidden group-hover:block' onClick={() => handleEditISPBtn(isp.ispName, isp.ispID)}>
@@ -50,7 +52,7 @@ function IspList({ onActiveISPChange, ispList, activeISP, editISP, deleteISP }) 
                     <div className="flex flex-col items-center gap-2 w-full py-2 overflow-y-auto">
                         {ispList.map((isp, index) => (
                             <div className='w-5/6 px-1' key={index}>
-                                <div id={isp.ispName} className={`btn group w-full flex flex-row px-2 hover:justify-between  ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'}`} onClick={()=>handleISPBtn(isp.ispName, isp.id)}>
+                                <div id={isp.ispName} className={`btn group w-full flex flex-row px-2 hover:justify-between  ${activeISP === isp.ispName ? 'btn-active' :' btn-primary'} ${theme === 'dark_mode' && activeISP === isp.ispName ? 'text-base-100' : ''} ${theme === 'light_mode' && activeISP === isp.ispName ? 'text-[#292524]' : ''}`} onClick={()=>handleISPBtn(isp.ispName, isp.id)}>
                                     {isp.ispName}
                     
                                     <div className="flex flex-row hidden group-hover:flex">
