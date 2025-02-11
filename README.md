@@ -1,8 +1,22 @@
-# React + Vite
+# 📱 Mobile Data Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and efficient web app built with **React.js**, **Tailwind CSS**, and **Firebase** to help you track and manage your mobile data usage.
 
-Currently, two official plugins are available:
+[Click here to open the web app](https://test-8bddd.web.app/home)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
+
+✅ **Track Data Usage** – Monitor your available and remaining mobile data in real time.  
+✅ **Set Data Allowances** – Allocate your data based on daily, weekly, or monthly limits.  
+✅ **Cloud Sync** – Securely store your data usage history with Firebase.  
+✅ **Responsive Design** – Optimized for mobile and desktop with Tailwind CSS.  
+
+## 🛠 Tech Stack
+
+- **Frontend:** React.js + Tailwind CSS  
+- **Backend & Database:** Firebase Firestore  
+- **Authentication:** Firebase Auth (if applicable)  
+
+## 🎯 Purpose
+
+This app is designed to help users keep track of their mobile data consumption, ensuring they stay within their limits and avoid unexpected charges.
